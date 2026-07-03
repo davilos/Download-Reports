@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ReportStatus {
+  PENDING
+  AVAILABLE
+  PROCESSING
+  ERROR
+  EXPIRED
+}
+
+enum ReportType {
+  pdf
+  xml
+  csv
+  xlsx
+}
+
+model Report {
+  id          String       @id @default(uuid())
+  fileName    String
+  fileSize    Int
+  contentType String
+  type        ReportType
+  status      ReportStatus @default(PENDING)
+  s3Key       String
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+
+  @@index([status, createdAt])
+  @@index([deletedAt])
+}
