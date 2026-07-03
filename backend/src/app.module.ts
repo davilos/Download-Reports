@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { StorageModule } from './storage/storage.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { StorageModule } from './storage/storage.module';
     ScheduleModule.forRoot(),
     PrismaModule,
     StorageModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
