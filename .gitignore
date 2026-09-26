@@ -58,3 +58,7 @@ pids
 
 # Local one-off scripts
 backend/setup-t1-t8.sh
+
+# python bytecode
+__pycache__/
+*.pyc
