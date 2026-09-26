@@ -53,3 +53,8 @@ pids
 # Harness
 .specs
 .design/
+.harness-eval/
+.agents/.skill-lock.json.backup
+
+# Local one-off scripts
+backend/setup-t1-t8.sh
