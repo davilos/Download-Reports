@@ -28,6 +28,28 @@ const ASK_COMMANDS = [
   [/\bnpm\s+publish\b/, 'Publishes a package.'],
 ];
 
+// Commands that execute text fed to them; their heredocs and quoted args stay scanned.
+const INTERPRETER = /\b(ba|z|da|k)?sh\b|\beval\b|\bsource\b|\bxargs\b|\bssh\b/;
+
+// Drops text that is data rather than a command, so a commit message or a file body that merely
+// mentions "git reset --hard" is not blocked: heredoc bodies fed to non-interpreters, and
+// -m/--message arguments.
+function executableText(cmd) {
+  const lines = cmd.split('\n');
+  const kept = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    kept.push(line);
+    const heredoc = line.match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
+    if (!heredoc || INTERPRETER.test(line)) continue;
+    const terminator = heredoc[2];
+    while (i + 1 < lines.length && lines[i + 1].trim() !== terminator) i++;
+  }
+  return kept
+    .join('\n')
+    .replace(/(\s(-m|--message)(=|\s+))("([^"\\]|\\.)*"|'[^']*')/g, '$1""');
+}
+
 function decide(decision, reason) {
   process.stdout.write(JSON.stringify({
     hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: decision, permissionDecisionReason: reason },
@@ -36,7 +58,7 @@ function decide(decision, reason) {
 }
 
 if (tool === 'Bash') {
-  const cmd = String(input.command ?? '');
+  const cmd = executableText(String(input.command ?? ''));
   for (const [re, why] of DENY_COMMANDS) if (re.test(cmd)) decide('deny', `Blocked by .claude/hooks/pre-tool-use.mjs: ${why} Ask the user to run it themselves if it is really needed.`);
   for (const [re, why] of ASK_COMMANDS) if (re.test(cmd)) decide('ask', why);
   process.exit(0);
