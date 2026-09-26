@@ -56,6 +56,20 @@
       ],
       "method": "copy",
       "global": false
+    },
+    "harness-eval": {
+      "name": "harness-eval",
+      "source": "local",
+      "contentHash": "675761f3fdb123f26103811ffe52e384adff5ffdf7c603578dfaa4eb2e54b2a2",
+      "installedAt": "2026-09-26T03:32:59.307Z",
+      "updatedAt": "2026-09-26T03:32:59.323Z",
+      "agents": [
+        "cursor",
+        "claude-code",
+        "windsurf"
+      ],
+      "method": "copy",
+      "global": false
     }
   }
 }
