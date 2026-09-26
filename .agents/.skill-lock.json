@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "skills": {
+    "tlc-spec-driven": {
+      "name": "tlc-spec-driven",
+      "source": "local",
+      "contentHash": "76e50c2dc0ec574d959e54cd084c725eb8b2faaf7638d432dc95045e3d4eec5f",
+      "installedAt": "2026-06-27T17:23:19.803Z",
+      "updatedAt": "2026-07-04T17:06:53.989Z",
+      "agents": [
+        "cursor",
+        "claude-code",
+        "windsurf"
+      ],
+      "method": "copy",
+      "global": false
+    },
+    "tlc-discover": {
+      "name": "tlc-discover",
+      "source": "local",
+      "contentHash": "518ab626fc8bac4ed1d0c5170b617d1adaec28a83634c1a462c7529d42170d3a",
+      "installedAt": "2026-09-26T02:11:51.181Z",
+      "updatedAt": "2026-09-26T02:11:51.306Z",
+      "agents": [
+        "cursor",
+        "claude-code",
+        "windsurf"
+      ],
+      "method": "copy",
+      "global": false
+    },
+    "the-judge": {
+      "name": "the-judge",
+      "source": "local",
+      "contentHash": "05526209052f6592ad98476e8f59e9ffa2a24e803e10a90ceac659476b509403",
+      "installedAt": "2026-09-26T02:55:34.276Z",
+      "updatedAt": "2026-09-26T02:55:34.286Z",
+      "agents": [
+        "cursor",
+        "claude-code",
+        "windsurf"
+      ],
+      "method": "copy",
+      "global": false
+    },
+    "tlc-spec-lean": {
+      "name": "tlc-spec-lean",
+      "source": "local",
+      "contentHash": "28368cb86a9d441fce24426eb502a39a5e7f9ffe0ad5d682fead2ce76c5b085b",
+      "installedAt": "2026-09-26T02:55:39.529Z",
+      "updatedAt": "2026-09-26T02:55:39.543Z",
+      "agents": [
+        "cursor",
+        "claude-code",
+        "windsurf"
+      ],
+      "method": "copy",
+      "global": false
+    }
+  }
+}
