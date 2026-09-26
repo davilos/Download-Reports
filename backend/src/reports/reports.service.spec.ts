@@ -88,7 +88,7 @@ describe('ReportsService', () => {
             fileSize: 1024,
             contentType: 'application/pdf',
             status: ReportStatus.PENDING,
-          }),
+          }) as unknown,
         }),
       );
       expect(result).toEqual({
@@ -254,10 +254,12 @@ describe('ReportsService', () => {
       expect(mockPrismaReport.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            fileName: expect.objectContaining({ contains: 'invoice' }),
+            fileName: expect.objectContaining({
+              contains: 'invoice',
+            }) as unknown,
             type: 'pdf',
             deletedAt: null,
-          }),
+          }) as unknown,
           skip: 5,
           take: 5,
         }),

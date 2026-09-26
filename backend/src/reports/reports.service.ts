@@ -21,7 +21,7 @@ export class ReportsService {
 
   async createUploadIntent(
     dto: UploadIntentDto,
-    userId: string,
+    _userId: string,
   ): Promise<{ uploadUrl: string; reportId: string }> {
     const reportType = this.getReportType(dto.contentType);
     const report = await this.prisma.report.create({

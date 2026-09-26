@@ -131,7 +131,7 @@ describe('ReportsController (e2e)', () => {
         .expect(401);
 
       // Spec-defined outcome (design.md API contract): 401 { message: "Unauthorized" }
-      expect(res.body.message).toBe('Unauthorized');
+      expect((res.body as { message: string }).message).toBe('Unauthorized');
       // Confirms the guard actually blocked the request before it reached the service.
       expect(mockPrismaReport.create).not.toHaveBeenCalled();
     });
