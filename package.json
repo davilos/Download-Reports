@@ -1,0 +1,12 @@
+{
+  "name": "download-reports",
+  "private": true,
+  "description": "Repo-level tooling only (git hooks). Each app has its own package.json in backend/ and frontend/.",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1"
+  }
+}
