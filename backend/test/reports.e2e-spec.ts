@@ -29,12 +29,18 @@ describe('ReportsController (e2e)', () => {
     findMany: jest.Mock;
     count: jest.Mock;
   };
-  let mockStorage: { createPutPresignedUrl: jest.Mock; createGetPresignedUrl: jest.Mock; buildS3Key: jest.Mock };
+  let mockStorage: {
+    createPutPresignedUrl: jest.Mock;
+    createGetPresignedUrl: jest.Mock;
+    buildS3Key: jest.Mock;
+  };
 
   // Mirrors JwtStrategy's own fallback (`configService.get('JWT_SECRET', 'default-secret')`)
   // so the signed token always matches whatever secret the running app resolves to.
   const jwtSecret = process.env.JWT_SECRET ?? 'default-secret';
-  const validToken = jwt.sign({ sub: 'user-123' }, jwtSecret, { expiresIn: '1h' });
+  const validToken = jwt.sign({ sub: 'user-123' }, jwtSecret, {
+    expiresIn: '1h',
+  });
 
   beforeEach(async () => {
     mockPrismaReport = {
@@ -47,8 +53,12 @@ describe('ReportsController (e2e)', () => {
 
     mockStorage = {
       buildS3Key: jest.fn().mockReturnValue('reports/report-1/file.pdf'),
-      createPutPresignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/put-url'),
-      createGetPresignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/get-url'),
+      createPutPresignedUrl: jest
+        .fn()
+        .mockResolvedValue('https://s3.example.com/put-url'),
+      createGetPresignedUrl: jest
+        .fn()
+        .mockResolvedValue('https://s3.example.com/get-url'),
     };
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -61,7 +71,9 @@ describe('ReportsController (e2e)', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
     app.setGlobalPrefix('api');
     await app.init();
   });
@@ -93,22 +105,33 @@ describe('ReportsController (e2e)', () => {
       const res = await request(app.getHttpServer())
         .post('/api/reports/upload-intent')
         .set('Authorization', `Bearer ${validToken}`)
-        .send({ fileName: 'file.pdf', fileSize: 1024, contentType: 'application/pdf' })
+        .send({
+          fileName: 'file.pdf',
+          fileSize: 1024,
+          contentType: 'application/pdf',
+        })
         .expect(200);
 
       // Spec-defined outcome (spec.md P1 Upload AC1/AC2): 200 { uploadUrl, reportId }
       // with reportId matching the record just created.
-      expect(res.body).toEqual({ uploadUrl: 'https://s3.example.com/put-url', reportId: 'report-1' });
+      expect(res.body).toEqual({
+        uploadUrl: 'https://s3.example.com/put-url',
+        reportId: 'report-1',
+      });
     });
 
     it('returns 401 when no JWT is provided', async () => {
       const res = await request(app.getHttpServer())
         .post('/api/reports/upload-intent')
-        .send({ fileName: 'file.pdf', fileSize: 1024, contentType: 'application/pdf' })
+        .send({
+          fileName: 'file.pdf',
+          fileSize: 1024,
+          contentType: 'application/pdf',
+        })
         .expect(401);
 
       // Spec-defined outcome (design.md API contract): 401 { message: "Unauthorized" }
-      expect(res.body.message).toBe('Unauthorized');
+      expect((res.body as { message: string }).message).toBe('Unauthorized');
       // Confirms the guard actually blocked the request before it reached the service.
       expect(mockPrismaReport.create).not.toHaveBeenCalled();
     });
@@ -117,7 +140,11 @@ describe('ReportsController (e2e)', () => {
       await request(app.getHttpServer())
         .post('/api/reports/upload-intent')
         .set('Authorization', `Bearer ${validToken}`)
-        .send({ fileName: 'file.exe', fileSize: 1024, contentType: 'application/x-msdownload' })
+        .send({
+          fileName: 'file.exe',
+          fileSize: 1024,
+          contentType: 'application/x-msdownload',
+        })
         .expect(400);
 
       expect(mockPrismaReport.create).not.toHaveBeenCalled();
@@ -131,14 +158,20 @@ describe('ReportsController (e2e)', () => {
         status: ReportStatus.PENDING,
         deletedAt: null,
       });
-      mockPrismaReport.update.mockResolvedValue({ id: 'report-1', status: ReportStatus.AVAILABLE });
+      mockPrismaReport.update.mockResolvedValue({
+        id: 'report-1',
+        status: ReportStatus.AVAILABLE,
+      });
 
       const res = await request(app.getHttpServer())
         .patch('/api/reports/report-1/confirm')
         .set('Authorization', `Bearer ${validToken}`)
         .expect(200);
 
-      expect(res.body).toEqual({ id: 'report-1', status: ReportStatus.AVAILABLE });
+      expect(res.body).toEqual({
+        id: 'report-1',
+        status: ReportStatus.AVAILABLE,
+      });
     });
 
     it('returns 404 REPORT_NOT_FOUND_OR_EXPIRED for a nonexistent id', async () => {
@@ -169,7 +202,9 @@ describe('ReportsController (e2e)', () => {
         .expect(200);
 
       // Spec-defined outcome (spec.md P1 Download AC2): 200 { downloadUrl }
-      expect(res.body).toEqual({ downloadUrl: 'https://s3.example.com/get-url' });
+      expect(res.body).toEqual({
+        downloadUrl: 'https://s3.example.com/get-url',
+      });
     });
 
     it('returns 422 REPORT_NOT_AVAILABLE when the report status is not AVAILABLE', async () => {
@@ -191,7 +226,14 @@ describe('ReportsController (e2e)', () => {
 
   describe('GET /api/reports', () => {
     it('returns 200 with the paginated list of reports', async () => {
-      const reports = [{ id: 'r1', fileName: 'a.pdf', type: 'pdf', status: ReportStatus.AVAILABLE }];
+      const reports = [
+        {
+          id: 'r1',
+          fileName: 'a.pdf',
+          type: 'pdf',
+          status: ReportStatus.AVAILABLE,
+        },
+      ];
       mockPrismaReport.findMany.mockResolvedValue(reports);
       mockPrismaReport.count.mockResolvedValue(1);
 
@@ -200,7 +242,12 @@ describe('ReportsController (e2e)', () => {
         .set('Authorization', `Bearer ${validToken}`)
         .expect(200);
 
-      expect(res.body).toEqual({ data: reports, total: 1, page: 1, pageSize: 10 });
+      expect(res.body).toEqual({
+        data: reports,
+        total: 1,
+        page: 1,
+        pageSize: 10,
+      });
     });
 
     it('returns 200 with an empty list when there are no reports', async () => {

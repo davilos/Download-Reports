@@ -1,10 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { StorageService } from './storage.service';
 
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
-  getSignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/presigned-url'),
+  getSignedUrl: jest
+    .fn()
+    .mockResolvedValue('https://s3.example.com/presigned-url'),
 }));
 
 describe('StorageService', () => {
@@ -42,14 +45,18 @@ describe('StorageService', () => {
   });
 
   it('createPutPresignedUrl returns presigned URL and uses correct TTL', async () => {
-    const { getSignedUrl } = require('@aws-sdk/s3-request-presigner') as { getSignedUrl: jest.Mock };
-    const url = await service.createPutPresignedUrl('reports/id/file.pdf', 'application/pdf', 1024);
+    const url = await service.createPutPresignedUrl(
+      'reports/id/file.pdf',
+      'application/pdf',
+      1024,
+    );
     expect(getSignedUrl).toHaveBeenCalledWith(
       expect.anything(),
       expect.any(PutObjectCommand),
       { expiresIn: 900 },
     );
-    const calledCommand = getSignedUrl.mock.calls[0][1] as PutObjectCommand;
+    const calledCommand = jest.mocked(getSignedUrl).mock
+      .calls[0][1] as PutObjectCommand;
     expect(calledCommand.input).toEqual({
       Bucket: 'test-bucket',
       Key: 'reports/id/file.pdf',
@@ -60,14 +67,14 @@ describe('StorageService', () => {
   });
 
   it('createGetPresignedUrl returns presigned URL and uses correct TTL', async () => {
-    const { getSignedUrl } = require('@aws-sdk/s3-request-presigner') as { getSignedUrl: jest.Mock };
     const url = await service.createGetPresignedUrl('reports/id/file.pdf');
     expect(getSignedUrl).toHaveBeenCalledWith(
       expect.anything(),
       expect.any(GetObjectCommand),
       { expiresIn: 120 },
     );
-    const calledCommand = getSignedUrl.mock.calls[0][1] as GetObjectCommand;
+    const calledCommand = jest.mocked(getSignedUrl).mock
+      .calls[0][1] as GetObjectCommand;
     expect(calledCommand.input).toEqual({
       Bucket: 'test-bucket',
       Key: 'reports/id/file.pdf',

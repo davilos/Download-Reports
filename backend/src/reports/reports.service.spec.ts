@@ -1,5 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
@@ -27,8 +30,12 @@ describe('ReportsService', () => {
 
     mockStorage = {
       buildS3Key: jest.fn().mockReturnValue('reports/report-id/file.pdf'),
-      createPutPresignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/put-url'),
-      createGetPresignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/get-url'),
+      createPutPresignedUrl: jest
+        .fn()
+        .mockResolvedValue('https://s3.example.com/put-url'),
+      createGetPresignedUrl: jest
+        .fn()
+        .mockResolvedValue('https://s3.example.com/get-url'),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -57,10 +64,17 @@ describe('ReportsService', () => {
         deletedAt: null,
       };
       mockPrismaReport.create.mockResolvedValue(mockReport);
-      mockPrismaReport.update.mockResolvedValue({ ...mockReport, s3Key: 'reports/report-id/file.pdf' });
+      mockPrismaReport.update.mockResolvedValue({
+        ...mockReport,
+        s3Key: 'reports/report-id/file.pdf',
+      });
 
       const result = await service.createUploadIntent(
-        { fileName: 'file.pdf', fileSize: 1024, contentType: 'application/pdf' },
+        {
+          fileName: 'file.pdf',
+          fileSize: 1024,
+          contentType: 'application/pdf',
+        },
         'user-123',
       );
 
@@ -74,10 +88,13 @@ describe('ReportsService', () => {
             fileSize: 1024,
             contentType: 'application/pdf',
             status: ReportStatus.PENDING,
-          }),
+          }) as unknown,
         }),
       );
-      expect(result).toEqual({ reportId: 'report-id', uploadUrl: 'https://s3.example.com/put-url' });
+      expect(result).toEqual({
+        reportId: 'report-id',
+        uploadUrl: 'https://s3.example.com/put-url',
+      });
     });
 
     it('propagates the error when the storage provider (S3) is unavailable', async () => {
@@ -94,18 +111,34 @@ describe('ReportsService', () => {
         deletedAt: null,
       };
       mockPrismaReport.create.mockResolvedValue(mockReport);
-      mockPrismaReport.update.mockResolvedValue({ ...mockReport, s3Key: 'reports/id/file.pdf' });
-      (mockStorage.createPutPresignedUrl as jest.Mock).mockRejectedValue(new Error('S3 unavailable'));
+      mockPrismaReport.update.mockResolvedValue({
+        ...mockReport,
+        s3Key: 'reports/id/file.pdf',
+      });
+      (mockStorage.createPutPresignedUrl as jest.Mock).mockRejectedValue(
+        new Error('S3 unavailable'),
+      );
 
       await expect(
-        service.createUploadIntent({ fileName: 'file.pdf', fileSize: 1024, contentType: 'application/pdf' }, 'user-id'),
+        service.createUploadIntent(
+          {
+            fileName: 'file.pdf',
+            fileSize: 1024,
+            contentType: 'application/pdf',
+          },
+          'user-id',
+        ),
       ).rejects.toThrow('S3 unavailable');
     });
   });
 
   describe('confirmUpload', () => {
     it('transitions a PENDING report to AVAILABLE', async () => {
-      const mockReport = { id: 'report-id', status: ReportStatus.PENDING, deletedAt: null };
+      const mockReport = {
+        id: 'report-id',
+        status: ReportStatus.PENDING,
+        deletedAt: null,
+      };
       const updatedReport = { ...mockReport, status: ReportStatus.AVAILABLE };
       mockPrismaReport.findFirst.mockResolvedValue(mockReport);
       mockPrismaReport.update.mockResolvedValue(updatedReport);
@@ -135,7 +168,11 @@ describe('ReportsService', () => {
 
     it('returns 422 INVALID_STATUS_TRANSITION for a report that is not PENDING (AVAILABLE or EXPIRED)', async () => {
       for (const status of [ReportStatus.AVAILABLE, ReportStatus.EXPIRED]) {
-        mockPrismaReport.findFirst.mockResolvedValue({ id: 'id', status, deletedAt: null });
+        mockPrismaReport.findFirst.mockResolvedValue({
+          id: 'id',
+          status,
+          deletedAt: null,
+        });
 
         try {
           await service.confirmUpload('id');
@@ -162,7 +199,9 @@ describe('ReportsService', () => {
 
       const result = await service.getDownloadLink('id');
 
-      expect(mockStorage.createGetPresignedUrl).toHaveBeenCalledWith('reports/id/file.pdf');
+      expect(mockStorage.createGetPresignedUrl).toHaveBeenCalledWith(
+        'reports/id/file.pdf',
+      );
       expect(result).toEqual({ downloadUrl: 'https://s3.example.com/get-url' });
     });
 
@@ -174,12 +213,18 @@ describe('ReportsService', () => {
         throw new Error('expected getDownloadLink to throw');
       } catch (err) {
         expect(err).toBeInstanceOf(NotFoundException);
-        expect((err as NotFoundException).getResponse()).toEqual({ error: 'REPORT_NOT_FOUND' });
+        expect((err as NotFoundException).getResponse()).toEqual({
+          error: 'REPORT_NOT_FOUND',
+        });
       }
     });
 
     it('returns 422 REPORT_NOT_AVAILABLE when status is not AVAILABLE', async () => {
-      mockPrismaReport.findFirst.mockResolvedValue({ id: 'id', status: ReportStatus.PENDING, deletedAt: null });
+      mockPrismaReport.findFirst.mockResolvedValue({
+        id: 'id',
+        status: ReportStatus.PENDING,
+        deletedAt: null,
+      });
 
       try {
         await service.getDownloadLink('id');
@@ -199,20 +244,32 @@ describe('ReportsService', () => {
       mockPrismaReport.findMany.mockResolvedValue(mockReports);
       mockPrismaReport.count.mockResolvedValue(1);
 
-      const result = await service.findAll({ search: 'invoice', type: 'pdf', page: 2, pageSize: 5 });
+      const result = await service.findAll({
+        search: 'invoice',
+        type: 'pdf',
+        page: 2,
+        pageSize: 5,
+      });
 
       expect(mockPrismaReport.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            fileName: expect.objectContaining({ contains: 'invoice' }),
+            fileName: expect.objectContaining({
+              contains: 'invoice',
+            }) as unknown,
             type: 'pdf',
             deletedAt: null,
-          }),
+          }) as unknown,
           skip: 5,
           take: 5,
         }),
       );
-      expect(result).toEqual({ data: mockReports, total: 1, page: 2, pageSize: 5 });
+      expect(result).toEqual({
+        data: mockReports,
+        total: 1,
+        page: 2,
+        pageSize: 5,
+      });
     });
 
     it('returns an empty page when there are no reports', async () => {

@@ -23,7 +23,9 @@ describe('CleanupService', () => {
       updateMany: jest.fn(),
     };
 
-    loggerSpy = jest.spyOn(Logger.prototype, 'log').mockImplementation(() => undefined);
+    loggerSpy = jest
+      .spyOn(Logger.prototype, 'log')
+      .mockImplementation(() => undefined);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -51,7 +53,9 @@ describe('CleanupService', () => {
       where: { id: { in: ['id-1', 'id-2'] } },
       data: { status: ReportStatus.EXPIRED, deletedAt: FIXED_NOW },
     });
-    expect(loggerSpy).toHaveBeenCalledWith('CleanupService: 2 registros PENDING expirados');
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'CleanupService: 2 registros PENDING expirados',
+    );
   });
 
   it('does not update and logs a distinct no-op message when zero records are found', async () => {
@@ -60,7 +64,9 @@ describe('CleanupService', () => {
     await service.runCleanup();
 
     expect(mockPrismaReport.updateMany).not.toHaveBeenCalled();
-    expect(loggerSpy).toHaveBeenCalledWith('CleanupService: nenhum registro para limpar');
+    expect(loggerSpy).toHaveBeenCalledWith(
+      'CleanupService: nenhum registro para limpar',
+    );
   });
 
   it('queries only PENDING reports older than 20 minutes with deletedAt null, excluding AVAILABLE and recent PENDING records', async () => {

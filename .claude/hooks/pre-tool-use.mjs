@@ -1,0 +1,105 @@
+#!/usr/bin/env node
+// PreToolUse gate: denies or escalates destructive shell commands and edits to protected files.
+// Reads the hook payload from stdin and answers with a permissionDecision (see Claude Code hooks docs).
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+
+const payload = JSON.parse(readFileSync(0, 'utf8') || '{}');
+const { tool_name: tool, tool_input: input = {} } = payload;
+const projectDir = process.env.CLAUDE_PROJECT_DIR ?? payload.cwd ?? process.cwd();
+
+const DENY_COMMANDS = [
+  [/\bgit\s+push\b[^|;&]*\s(--force(?!-with-lease)|-f)\b/, 'Force push rewrites shared history.'],
+  [/\bgit\s+reset\s+--hard\b/, 'git reset --hard discards uncommitted work.'],
+  [/\bgit\s+clean\s+-[a-z]*f/, 'git clean -f deletes untracked files (much of this repo is still untracked).'],
+  [/\bgit\s+checkout\s+(--\s+)?\.(\s|$)/, 'git checkout . discards uncommitted work.'],
+  [/\bgit\s+restore\s+(--\S+\s+)*\.(\s|$)/, 'git restore . discards uncommitted work.'],
+  [/\bprisma\s+migrate\s+reset\b/, 'prisma migrate reset drops the database.'],
+  [/\bprisma\s+db\s+push\b.*--(force-reset|accept-data-loss)/, 'Destructive prisma db push.'],
+  [/\b(drop\s+(table|database|schema)|truncate\s+table)\b/i, 'Destructive SQL statement.'],
+  [/\baws\s+s3\s+(rb|rm)\b/, 'Deletes S3 objects or buckets.'],
+  [/\brm\s+(-[a-zA-Z]*[rR][a-zA-Z]*\s+)+(\/|~|\$HOME|\.|\.\.|\*|\.git|backend|frontend|\.specs)\/?(\s|$)/,
+    'Recursive delete of a broad path.'],
+];
+
+const ASK_COMMANDS = [
+  [/\bgit\s+push\b/, 'Pushing publishes commits to the remote.'],
+  [/\bprisma\s+migrate\s+deploy\b/, 'Applies migrations to the target database.'],
+  [/\bnpm\s+publish\b/, 'Publishes a package.'],
+];
+
+// Commands that execute text fed to them; their heredocs and quoted args stay scanned.
+const INTERPRETER = /\b(ba|z|da|k)?sh\b|\beval\b|\bsource\b|\bxargs\b|\bssh\b/;
+
+// Drops text that is data rather than a command, so a commit message or a file body that merely
+// mentions "git reset --hard" is not blocked: heredoc bodies fed to non-interpreters, and
+// -m/--message arguments.
+function executableText(cmd) {
+  const lines = cmd.split('\n');
+  const kept = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    kept.push(line);
+    const heredoc = line.match(/<<-?\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\1/);
+    if (!heredoc || INTERPRETER.test(line)) continue;
+    const terminator = heredoc[2];
+    while (i + 1 < lines.length && lines[i + 1].trim() !== terminator) i++;
+  }
+  return kept
+    .join('\n')
+    .replace(/(\s(-m|--message)(=|\s+))("([^"\\]|\\.)*"|'[^']*')/g, '$1""');
+}
+
+function decide(decision, reason) {
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: decision, permissionDecisionReason: reason },
+  }));
+  process.exit(0);
+}
+
+// .env, .env.local, .env.production… hold credentials; .env.example is the documented template.
+const isSecretEnv = (name) => /^\.env(\..+)?$/.test(name) && !name.endsWith('.example');
+const ENV_SECRET_REASON =
+  'Blocked by .claude/hooks/pre-tool-use.mjs: .env files hold credentials and must not be read or changed by the agent. '
+  + 'Use .env.example / the package README for variable names, and ask the user for any value you need.';
+
+// Any shell token that names an env file, e.g. `.env`, `backend/.env.local`, `"$HOME/.env"`.
+function mentionsSecretEnv(cmd) {
+  for (const m of cmd.matchAll(/(?:^|[\s'"=:/<>(])(\.env(?:\.[A-Za-z0-9_-]+)*)(?=$|[\s'";|&<>)])/g)) {
+    if (isSecretEnv(m[1])) return true;
+  }
+  return false;
+}
+
+if (tool === 'Bash') {
+  const cmd = executableText(String(input.command ?? ''));
+  if (mentionsSecretEnv(cmd)) decide('deny', ENV_SECRET_REASON);
+  for (const [re, why] of DENY_COMMANDS) if (re.test(cmd)) decide('deny', `Blocked by .claude/hooks/pre-tool-use.mjs: ${why} Ask the user to run it themselves if it is really needed.`);
+  for (const [re, why] of ASK_COMMANDS) if (re.test(cmd)) decide('ask', why);
+  process.exit(0);
+}
+
+if (tool === 'Read' || tool === 'Grep') {
+  const target = input.file_path ?? input.path;
+  if (target && isSecretEnv(path.basename(String(target)))) decide('deny', ENV_SECRET_REASON);
+  const glob = String(input.glob ?? '');
+  if (/\.env/.test(glob) && !/\.env\.example$/.test(glob)) decide('deny', ENV_SECRET_REASON);
+  process.exit(0);
+}
+
+const filePath = input.file_path ?? input.notebook_path;
+if (filePath) {
+  const rel = path.relative(projectDir, path.resolve(projectDir, filePath)).split(path.sep).join('/');
+  const base = path.basename(rel);
+
+  if (isSecretEnv(base)) decide('deny', ENV_SECRET_REASON);
+  if (base === 'package-lock.json') {
+    decide('deny', 'Do not hand-edit package-lock.json; run npm install in the package instead.');
+  }
+  if (rel.startsWith('.git/')) decide('deny', 'Direct edits inside .git/ are blocked.');
+  if (/(^|\/)prisma\/migrations\/.+/.test(rel) && existsSync(path.resolve(projectDir, rel))) {
+    decide('deny', 'Applied Prisma migrations are immutable; create a new migration with prisma migrate dev.');
+  }
+}
+
+process.exit(0);
