@@ -57,10 +57,33 @@ function decide(decision, reason) {
   process.exit(0);
 }
 
+// .env, .env.local, .env.production… hold credentials; .env.example is the documented template.
+const isSecretEnv = (name) => /^\.env(\..+)?$/.test(name) && !name.endsWith('.example');
+const ENV_SECRET_REASON =
+  'Blocked by .claude/hooks/pre-tool-use.mjs: .env files hold credentials and must not be read or changed by the agent. '
+  + 'Use .env.example / the package README for variable names, and ask the user for any value you need.';
+
+// Any shell token that names an env file, e.g. `.env`, `backend/.env.local`, `"$HOME/.env"`.
+function mentionsSecretEnv(cmd) {
+  for (const m of cmd.matchAll(/(?:^|[\s'"=:/<>(])(\.env(?:\.[A-Za-z0-9_-]+)*)(?=$|[\s'";|&<>)])/g)) {
+    if (isSecretEnv(m[1])) return true;
+  }
+  return false;
+}
+
 if (tool === 'Bash') {
   const cmd = executableText(String(input.command ?? ''));
+  if (mentionsSecretEnv(cmd)) decide('deny', ENV_SECRET_REASON);
   for (const [re, why] of DENY_COMMANDS) if (re.test(cmd)) decide('deny', `Blocked by .claude/hooks/pre-tool-use.mjs: ${why} Ask the user to run it themselves if it is really needed.`);
   for (const [re, why] of ASK_COMMANDS) if (re.test(cmd)) decide('ask', why);
+  process.exit(0);
+}
+
+if (tool === 'Read' || tool === 'Grep') {
+  const target = input.file_path ?? input.path;
+  if (target && isSecretEnv(path.basename(String(target)))) decide('deny', ENV_SECRET_REASON);
+  const glob = String(input.glob ?? '');
+  if (/\.env/.test(glob) && !/\.env\.example$/.test(glob)) decide('deny', ENV_SECRET_REASON);
   process.exit(0);
 }
 
@@ -69,9 +92,7 @@ if (filePath) {
   const rel = path.relative(projectDir, path.resolve(projectDir, filePath)).split(path.sep).join('/');
   const base = path.basename(rel);
 
-  if (/^\.env(\..+)?$/.test(base) && !base.endsWith('.example')) {
-    decide('deny', 'Editing .env files is blocked: they hold credentials. Update .env.example / the README instead.');
-  }
+  if (isSecretEnv(base)) decide('deny', ENV_SECRET_REASON);
   if (base === 'package-lock.json') {
     decide('deny', 'Do not hand-edit package-lock.json; run npm install in the package instead.');
   }

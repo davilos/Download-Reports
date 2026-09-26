@@ -82,5 +82,6 @@ say explicitly that it does not; the `api-contract-reviewer` subagent checks thi
   (and `.env.example` once it exists).
 - Do not hand-edit `package-lock.json`; use `npm install`.
 - Never edit an applied migration under `backend/prisma/migrations/`; create a new one.
-- Destructive commands (`git reset --hard`, force push, `prisma migrate reset`, `rm -rf` on broad paths) are
-  blocked by `.claude/hooks/pre-tool-use.mjs`. Ask the user instead of working around the hook.
+- Destructive commands (`git reset --hard`, force push, `prisma migrate reset`, `rm -rf` on broad paths) and any
+  read or edit of `.env*` files (Read, Grep, or a shell command naming the file) are blocked by
+  `.claude/hooks/pre-tool-use.mjs`. Ask the user instead of working around the hook.
