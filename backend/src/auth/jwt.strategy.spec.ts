@@ -45,17 +45,25 @@ describe('JwtStrategy', () => {
         },
       };
 
-      (strategy as unknown as {
-        success: (user: { userId: string }) => void;
-        fail: (info: unknown) => void;
-        error: (err: unknown) => void;
-      }).success = (user) => resolve({ type: 'success', user });
-      (strategy as unknown as { fail: (info: unknown) => void }).fail = (info) =>
-        resolve({ type: 'fail', info });
-      (strategy as unknown as { error: (err: unknown) => void }).error = (err) =>
-        resolve({ type: 'error', err });
+      (
+        strategy as unknown as {
+          success: (user: { userId: string }) => void;
+          fail: (info: unknown) => void;
+          error: (err: unknown) => void;
+        }
+      ).success = (user) => resolve({ type: 'success', user });
+      (strategy as unknown as { fail: (info: unknown) => void }).fail = (
+        info,
+      ) => resolve({ type: 'fail', info });
+      (strategy as unknown as { error: (err: unknown) => void }).error = (
+        err,
+      ) => resolve({ type: 'error', err });
 
-      (strategy as unknown as { authenticate: (req: unknown, options?: unknown) => void }).authenticate(req);
+      (
+        strategy as unknown as {
+          authenticate: (req: unknown, options?: unknown) => void;
+        }
+      ).authenticate(req);
     });
   }
 
@@ -65,7 +73,9 @@ describe('JwtStrategy', () => {
     const result = await authenticate(token);
 
     expect(result.type).toBe('success');
-    expect((result as { type: 'success'; user: { userId: string } }).user).toEqual({
+    expect(
+      (result as { type: 'success'; user: { userId: string } }).user,
+    ).toEqual({
       userId: 'user-123',
     });
   });

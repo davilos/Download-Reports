@@ -67,7 +67,9 @@ export class ReportsService {
     // source (design.md contract + this task's own 12-test list) here;
     // true idempotent concurrent-confirm handling is not implemented by this task.
     if (report.status !== ReportStatus.PENDING) {
-      throw new UnprocessableEntityException({ error: 'INVALID_STATUS_TRANSITION' });
+      throw new UnprocessableEntityException({
+        error: 'INVALID_STATUS_TRANSITION',
+      });
     }
 
     return this.prisma.report.update({
@@ -128,7 +130,8 @@ export class ReportsService {
       'application/pdf': 'pdf',
       'application/xml': 'xml',
       'text/csv': 'csv',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        'xlsx',
     };
     return map[contentType] ?? 'pdf';
   }

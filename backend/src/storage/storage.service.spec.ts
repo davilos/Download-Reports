@@ -4,7 +4,9 @@ import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { StorageService } from './storage.service';
 
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
-  getSignedUrl: jest.fn().mockResolvedValue('https://s3.example.com/presigned-url'),
+  getSignedUrl: jest
+    .fn()
+    .mockResolvedValue('https://s3.example.com/presigned-url'),
 }));
 
 describe('StorageService', () => {
@@ -42,8 +44,14 @@ describe('StorageService', () => {
   });
 
   it('createPutPresignedUrl returns presigned URL and uses correct TTL', async () => {
-    const { getSignedUrl } = require('@aws-sdk/s3-request-presigner') as { getSignedUrl: jest.Mock };
-    const url = await service.createPutPresignedUrl('reports/id/file.pdf', 'application/pdf', 1024);
+    const { getSignedUrl } = require('@aws-sdk/s3-request-presigner') as {
+      getSignedUrl: jest.Mock;
+    };
+    const url = await service.createPutPresignedUrl(
+      'reports/id/file.pdf',
+      'application/pdf',
+      1024,
+    );
     expect(getSignedUrl).toHaveBeenCalledWith(
       expect.anything(),
       expect.any(PutObjectCommand),
@@ -60,7 +68,9 @@ describe('StorageService', () => {
   });
 
   it('createGetPresignedUrl returns presigned URL and uses correct TTL', async () => {
-    const { getSignedUrl } = require('@aws-sdk/s3-request-presigner') as { getSignedUrl: jest.Mock };
+    const { getSignedUrl } = require('@aws-sdk/s3-request-presigner') as {
+      getSignedUrl: jest.Mock;
+    };
     const url = await service.createGetPresignedUrl('reports/id/file.pdf');
     expect(getSignedUrl).toHaveBeenCalledWith(
       expect.anything(),

@@ -36,6 +36,8 @@ export class CleanupService {
       },
     });
 
-    this.logger.log(`CleanupService: ${expiredReports.length} registros PENDING expirados`);
+    this.logger.log(
+      `CleanupService: ${expiredReports.length} registros PENDING expirados`,
+    );
   }
 }
