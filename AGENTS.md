@@ -118,6 +118,13 @@ Full detail: [docs/CODE-GENERATION-GUIDELINES.md](docs/CODE-GENERATION-GUIDELINE
   file (rules, entities, routes, files, commands, env vars, naming); delete entries that stop being true. Document
   only what the code does, and verify it. This file stays about two pages; detail goes in `docs/`.
 
+## tlc-spec-lean
+
+profile: standard
+
+Use `ui` instead when the feature changes what `frontend/src/pages/` or `frontend/src/components/` render. Write
+the chosen profile on the `Profile:` line of `checks.md`; the Verifier and `validate_verification.py` follow it.
+
 ## Safety
 
 - Never read, print or commit `.env*` files or credentials; document new env vars in the package README.

@@ -18,6 +18,12 @@ Decisions are logged in `.specs/STATE.md` (AD-001…). Feature specs live in `.s
 (`spec.md`, `design.md`, `tasks.md`). `.specs/` is gitignored, so it exists only in local checkouts. Read the
 relevant spec before changing behaviour it covers; record new architectural decisions in `STATE.md`.
 
+`tlc-spec-lean` verification profile (declared in [AGENTS.md](../AGENTS.md#tlc-spec-lean)): `standard` by default,
+so the Verifier recomputes `Coverage`, judges `Test policy` rows and injects faults; `ui` when the feature changes
+what `frontend/src/pages/` or `frontend/src/components/` render, which adds the comparison against binding design
+sources and the per-screen check of copy and arrangement. The profile is pinned on the `Profile:` line of the
+feature's `checks.md`, and `validate_verification.py` rejects a report that declares a different one.
+
 ## Codebase map
 
 Where each responsibility lives, by layer. Put new code in the layer that owns the concern: business rules and
@@ -86,7 +92,8 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. |
 | `.claude/commands/check.md`, `.claude/agents/api-contract-reviewer.md` | The `/check` gate and the contract-review subagent. |
 | `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval), mirrored per tool. |
-| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. || `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
+| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
+| `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
 | `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |
 
 ## Build & test commands
