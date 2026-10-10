@@ -69,8 +69,8 @@ frontend/src/types/report.ts      API contract mirror
 frontend/src/utils/format.ts      display formatting
 frontend/vite.config.ts           no /api proxy: the dev SPA (:5173) can't reach the API (:3000) without one
 .github/workflows/ci.yml          CI gate · .husky/ + lint-staged.config.mjs: pre-commit format and lint
-.claude/                          hooks (guard, post-edit), /check, api-contract-reviewer, skills
-                                  (skills mirrored in .cursor/ and .windsurf/)
+.claude/                          hooks (guard, post-edit), /check, api-contract-reviewer, skills, rules
+                                  (skills and rules mirrored in .cursor/ and .windsurf/)
 docs/                             full-detail references behind this file
 ```
 
