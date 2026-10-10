@@ -1,4 +1,4 @@
-# download-reports
+# Download Report Files
 
 Upload, list and download report files (PDF, XML, CSV, XLSX) through S3 presigned URLs. The API issues
 short-lived URLs; the browser transfers the bytes straight to and from S3.
