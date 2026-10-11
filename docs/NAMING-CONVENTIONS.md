@@ -94,5 +94,3 @@ Leave as is unless the task is the rename:
 - `ReportType` values are lowercase (`pdf`) while `ReportStatus` values are UPPERCASE.
 - `isDownloading` in `useDownload` holds the report id (`string | null`), not a boolean.
 - `CleanupService` log messages are in Portuguese; other code text is English.
-- Backend `createdAt` / `fileSize` vs frontend `sentAt` / `sizeInBytes` (see the API ↔ UI contract in
-  [ARCHITECTURE-GUIDELINES.md](ARCHITECTURE-GUIDELINES.md#api--ui-contract)).

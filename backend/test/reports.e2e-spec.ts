@@ -250,6 +250,53 @@ describe('ReportsController (e2e)', () => {
       });
     });
 
+    // Pins the names the frontend `Report` mirrors (frontend/src/types/report.ts): renaming either side fails a test.
+    it('returns createdAt as an ISO string, fileSize as a number and the UPPERCASE status', async () => {
+      const createdAt = new Date('2026-10-08T12:00:00.000Z');
+      const statuses = [
+        ReportStatus.PENDING,
+        ReportStatus.AVAILABLE,
+        ReportStatus.PROCESSING,
+        ReportStatus.ERROR,
+        ReportStatus.EXPIRED,
+      ];
+      mockPrismaReport.findMany.mockResolvedValue(
+        statuses.map((status, index) => ({
+          id: `r${index}`,
+          fileName: 'a.pdf',
+          fileSize: 1536,
+          contentType: 'application/pdf',
+          type: 'pdf',
+          status,
+          s3Key: `reports/r${index}/a.pdf`,
+          createdAt,
+          updatedAt: createdAt,
+          deletedAt: null,
+        })),
+      );
+      mockPrismaReport.count.mockResolvedValue(5);
+
+      const res = await request(app.getHttpServer())
+        .get('/api/reports')
+        .set('Authorization', `Bearer ${validToken}`)
+        .expect(200);
+
+      const item = (status: string) => ({
+        createdAt: '2026-10-08T12:00:00.000Z',
+        fileSize: 1536,
+        status,
+      });
+      expect(res.body).toMatchObject({
+        data: [
+          item('PENDING'),
+          item('AVAILABLE'),
+          item('PROCESSING'),
+          item('ERROR'),
+          item('EXPIRED'),
+        ],
+      });
+    });
+
     it('returns 200 with an empty list when there are no reports', async () => {
       mockPrismaReport.findMany.mockResolvedValue([]);
       mockPrismaReport.count.mockResolvedValue(0);

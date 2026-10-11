@@ -59,7 +59,7 @@ an agent writes or changes. Package-specific rules in [backend/AGENTS.md](../bac
 | ------------ | ------ |
 | A behaviour, limit, TTL or status transition | Business rules in `AGENTS.md` and `docs/DOMAIN-GUIDELINES.md`; key decisions in `docs/ARCHITECTURE-GUIDELINES.md` if listed |
 | The Prisma schema or an enum | Domain in `AGENTS.md`, entities in `docs/DOMAIN-GUIDELINES.md`; `docs/NAMING-CONVENTIONS.md` if it adds a pattern |
-| A route, request/response field or error code | Flow in `AGENTS.md`, API ↔ UI contract, business rules |
+| A route, request/response field or error code | Flow and business rules in `AGENTS.md`, API ↔ UI contract in `docs/ARCHITECTURE-GUIDELINES.md` |
 | A file, module, folder or layer (added, moved, removed) | Codebase map in `AGENTS.md` and `docs/ARCHITECTURE-GUIDELINES.md` |
 | A command, script, tool, hook or CI step | Build & test commands and the tooling table in `docs/ARCHITECTURE-GUIDELINES.md` |
 | An env var or config key | `docs/ARCHITECTURE-GUIDELINES.md`, the package `AGENTS.md` config list, and the README |

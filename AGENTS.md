@@ -76,12 +76,6 @@ docs/                             full-detail references behind this file
 
 Business rules live in services (backend) and hooks (frontend), never in controllers, `api/` or components.
 
-## API ↔ UI contract
-
-Known drift: backend `createdAt` / `fileSize` / UPPERCASE status vs frontend `sentAt` / `sizeInBytes` / lowercase.
-Keep both sides consistent or say explicitly that you didn't; `api-contract-reviewer` checks it. Errors are
-`throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`; the frontend matches on `error`.
-
 ## Naming
 
 Full detail and examples: [docs/NAMING-CONVENTIONS.md](docs/NAMING-CONVENTIONS.md).

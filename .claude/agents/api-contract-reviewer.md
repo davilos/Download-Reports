@@ -21,9 +21,6 @@ Frontend side:
 - `frontend/src/api/*.ts` — URLs, verbs, params and response generics.
 - `frontend/src/hooks/*.ts` — error-code handling (`error === '...'`).
 
-Context: `.design/run-end-to-end.md` documents known drift (field names, status casing). Treat those as
-known, but still list them so the report is complete; mark them `known`.
-
 ## Procedure
 
 1. For every endpoint in the controller, match it to a function in `frontend/src/api/`. Compare path, verb,
