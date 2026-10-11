@@ -75,12 +75,15 @@ describe('ReportsTable', () => {
     expect(cellInColumn('Tamanho')).toHaveTextContent('1.5 KB');
   });
 
-  it('enables the download button for an AVAILABLE report', () => {
+  it('enables the download button for an AVAILABLE report', async () => {
     renderTable([availableReport]);
 
     const button = within(cellInColumn('Ações')).getByRole('button');
     expect(button).toHaveAttribute('id', 'download-r1');
     expect(button).toBeEnabled();
+
+    const tooltip = await openTooltip(button);
+    expect(tooltip).toHaveTextContent('Baixar arquivo');
   });
 
   it('calls onDownload once with the report id and fileName', () => {
@@ -115,6 +118,9 @@ describe('ReportsTable', () => {
 
     const headers = screen.getAllByRole('columnheader').map((th) => th.textContent?.trim());
     expect(headers).toEqual(['Nome do Arquivo', 'Data de Envio', 'Tamanho', 'Status', 'Ações']);
+    const nameCell = cellInColumn('Nome do Arquivo');
+    expect(within(nameCell).getByText('relatorio-vendas-outubro.pdf')).toBeInTheDocument();
+    expect(within(nameCell).getByText('PDF')).toBeInTheDocument();
     expect(cellInColumn('Status')).toHaveTextContent('Pendente');
   });
 });
