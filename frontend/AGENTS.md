@@ -8,7 +8,8 @@ React 19 + Vite SPA. Applies to everything under `frontend/`. Root rules in [../
   `client.ts` sets `baseURL: '/api'` and injects the JWT from `localStorage.token`.
 - `src/hooks/` — stateful logic (`useReports`, `useUpload`, `useDownload`); components stay presentational.
 - `src/components/{reports,ui,layout}/` — each folder has an `index.ts` barrel; import from the barrel.
-- `src/types/` — domain types (`report.ts`). Must mirror the backend response shape (see root "API ↔ UI contract").
+- `src/types/` — domain types (`report.ts`). Must mirror the backend response shape (see "API ↔ UI contract" in
+  [../docs/ARCHITECTURE-GUIDELINES.md](../docs/ARCHITECTURE-GUIDELINES.md#api--ui-contract)).
 - `src/pages/` — route-level components.
 
 ## Rules

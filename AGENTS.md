@@ -76,14 +76,6 @@ docs/                             full-detail references behind this file
 
 Business rules live in services (backend) and hooks (frontend), never in controllers, `api/` or components.
 
-## API ↔ UI contract
-
-The frontend `Report` mirrors the list JSON: Prisma field names (`createdAt`, `fileSize`) and UPPERCASE status,
-pinned by `backend/test/reports.e2e-spec.ts` and `frontend/src/types/report.test.ts`; `StatusDot` shows
-`Desconhecido` for any other status. Keep both sides consistent or say explicitly that you didn't;
-`api-contract-reviewer` checks it. Errors are `throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`; the frontend
-matches on `error`.
-
 ## Naming
 
 Full detail and examples: [docs/NAMING-CONVENTIONS.md](docs/NAMING-CONVENTIONS.md).
