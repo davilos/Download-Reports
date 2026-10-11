@@ -113,14 +113,24 @@ describe('ReportsTable', () => {
     },
   );
 
-  it('renders the status label in the Status column', () => {
-    renderTable([{ ...availableReport, status: 'PENDING' }]);
+  it('renders the column headers in order', () => {
+    renderTable([availableReport]);
 
     const headers = screen.getAllByRole('columnheader').map((th) => th.textContent?.trim());
     expect(headers).toEqual(['Nome do Arquivo', 'Data de Envio', 'Tamanho', 'Status', 'Ações']);
+  });
+
+  it('renders the fileName and its type badge in the Nome do Arquivo cell', () => {
+    renderTable([availableReport]);
+
     const nameCell = cellInColumn('Nome do Arquivo');
     expect(within(nameCell).getByText('relatorio-vendas-outubro.pdf')).toBeInTheDocument();
     expect(within(nameCell).getByText('PDF')).toBeInTheDocument();
+  });
+
+  it('renders the status label in the Status column', () => {
+    renderTable([{ ...availableReport, status: 'PENDING' }]);
+
     expect(cellInColumn('Status')).toHaveTextContent('Pendente');
   });
 });
