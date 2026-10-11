@@ -42,7 +42,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
         <tbody className="divide-y divide-surface-800/50">
           {reports.map((report, index) => {
             const isDownloading = downloadingId === report.id;
-            const isAvailable = report.status === 'available';
+            const isAvailable = report.status === 'AVAILABLE';
 
             return (
               <tr
@@ -72,7 +72,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
                     <Tooltip.Root>
                       <Tooltip.Trigger asChild>
                         <span className="text-sm text-surface-300 cursor-default">
-                          {formatRelativeDate(report.sentAt)}
+                          {formatRelativeDate(report.createdAt)}
                         </span>
                       </Tooltip.Trigger>
                       <Tooltip.Portal>
@@ -81,7 +81,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
                                      px-3 py-2 rounded-lg shadow-xl animate-fade-in z-50"
                           sideOffset={5}
                         >
-                          {formatDate(report.sentAt)}
+                          {formatDate(report.createdAt)}
                           <Tooltip.Arrow className="fill-surface-800" />
                         </Tooltip.Content>
                       </Tooltip.Portal>
@@ -92,7 +92,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
                 {/* Size */}
                 <td className="py-4 px-6">
                   <span className="text-sm text-surface-400 font-mono">
-                    {formatFileSize(report.sizeInBytes)}
+                    {formatFileSize(report.fileSize)}
                   </span>
                 </td>
 

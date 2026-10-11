@@ -122,9 +122,12 @@ failure (do not "fix" it as a side effect of unrelated work): `backend/test/app.
 
 ## API ↔ UI contract
 
-The backend `Report` (Prisma: `createdAt`, `fileSize`, UPPERCASE status) and the frontend `Report`
-(`frontend/src/types/report.ts`: `sentAt`, `sizeInBytes`, lowercase status) currently **differ**. This is known
-drift tracked in `.design/run-end-to-end.md` (local, gitignored). Any change touching either side must keep them
+The frontend `Report` (`frontend/src/types/report.ts`) mirrors the JSON of `GET /api/reports`, which is the Prisma
+row as stored: same field names (`createdAt`, `fileSize`) and UPPERCASE `ReportStatus`. The backend does not
+translate names for the UI. Two tests pin the names on each side: the `GET /api/reports` case in
+`backend/test/reports.e2e-spec.ts` asserts the serialized `createdAt`, `fileSize` and status values, and
+`frontend/src/types/report.test.ts` asserts the exact `Report` and `ReportStatus` types, which `tsc -b` compiles.
+`StatusDot` renders `Desconhecido` for a status outside the union. Any change touching either side must keep them
 consistent or say explicitly that it does not; the `api-contract-reviewer` subagent checks this.
 
 Error responses: `throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`. The frontend matches on `error`.

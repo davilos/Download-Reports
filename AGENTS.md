@@ -78,9 +78,11 @@ Business rules live in services (backend) and hooks (frontend), never in control
 
 ## API ↔ UI contract
 
-Known drift: backend `createdAt` / `fileSize` / UPPERCASE status vs frontend `sentAt` / `sizeInBytes` / lowercase.
-Keep both sides consistent or say explicitly that you didn't; `api-contract-reviewer` checks it. Errors are
-`throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`; the frontend matches on `error`.
+The frontend `Report` mirrors the list JSON: Prisma field names (`createdAt`, `fileSize`) and UPPERCASE status,
+pinned by `backend/test/reports.e2e-spec.ts` and `frontend/src/types/report.test.ts`; `StatusDot` shows
+`Desconhecido` for any other status. Keep both sides consistent or say explicitly that you didn't;
+`api-contract-reviewer` checks it. Errors are `throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`; the frontend
+matches on `error`.
 
 ## Naming
 

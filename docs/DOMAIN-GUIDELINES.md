@@ -11,7 +11,7 @@ issued on demand to an authenticated user that expires within minutes.
 
 ## Entities
 
-Source of truth: `backend/prisma/schema.prisma`. Frontend names are in brackets where they differ.
+Source of truth: `backend/prisma/schema.prisma`. The frontend `Report` uses the same field names.
 
 **User** — not a model. Represents the authenticated caller, identified only by the JWT `sub`
 (`req.user.userId`). Nothing about the user is persisted (no account, subscriber or tenant record).
@@ -23,16 +23,16 @@ and to find its object in S3.
 | ----- | ----------- |
 | `id` | UUID. Public identifier in every route, and part of the S3 key. |
 | `fileName` | Original file name as sent by the browser. Used in the S3 key, as the download file name, and as the search target. |
-| `fileSize` [`sizeInBytes`] | Size in bytes **declared by the client** at upload intent (1 B–50 MB). Not checked against the stored object. |
+| `fileSize` | Size in bytes **declared by the client** at upload intent (1 B–50 MB). Not checked against the stored object. |
 | `contentType` | MIME type declared by the client; one of the four allowed types. Signed into the PUT URL. |
 | `type` | File format derived from `contentType` on the server. Drives the type filter and the file icon. |
 | `status` | Position in the lifecycle — see `ReportStatus`. |
 | `s3Key` | `reports/{id}/{fileName}`. Briefly `''` between the two writes in `createUploadIntent`. |
-| `createdAt` [`sentAt`] | When the upload intent was created (not when it was confirmed). UI: "Data de Envio". Sort key; the cron measures age from it. |
+| `createdAt` | When the upload intent was created (not when it was confirmed). UI: "Data de Envio". Sort key; the cron measures age from it. |
 | `updatedAt` | Last change, maintained by Prisma. |
 | `deletedAt` | Soft-delete marker. `null` = live; set together with `status = EXPIRED`. |
 
-**ReportStatus** (lowercase in the frontend):
+**ReportStatus** (same UPPERCASE values in the frontend):
 
 | Value | Meaning | Set by |
 | ----- | ------- | ------ |

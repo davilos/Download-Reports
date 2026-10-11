@@ -3,8 +3,8 @@
 export interface Report {
   id: string;
   fileName: string;
-  sentAt: string;       // ISO date string
-  sizeInBytes: number;
+  createdAt: string;    // ISO date string
+  fileSize: number;
   type: ReportType;
   status: ReportStatus;
   // downloadUrl removed — generated on demand via /download-link
@@ -12,7 +12,7 @@ export interface Report {
 
 export type ReportType = 'pdf' | 'xml' | 'csv' | 'xlsx';
 
-export type ReportStatus = 'available' | 'processing' | 'error' | 'pending' | 'expired';
+export type ReportStatus = 'PENDING' | 'AVAILABLE' | 'PROCESSING' | 'ERROR' | 'EXPIRED';
 
 export interface ReportsResponse {
   data: Report[];
