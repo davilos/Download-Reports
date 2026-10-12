@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Filter, X } from 'lucide-react';
-import * as Select from '@radix-ui/react-select';
-import { ChevronDownIcon, CheckIcon } from '@radix-ui/react-icons';
+import { Search, X } from 'lucide-react';
 import type { ReportType } from '../../types';
 
 interface SearchFilterBarProps {
@@ -12,15 +10,15 @@ interface SearchFilterBarProps {
 }
 
 const typeOptions: { value: ReportType | 'all'; label: string }[] = [
-  { value: 'all', label: 'Todos os tipos' },
+  { value: 'all', label: 'Todos' },
   { value: 'pdf', label: 'PDF' },
   { value: 'xml', label: 'XML' },
   { value: 'csv', label: 'CSV' },
-  { value: 'xlsx', label: 'Excel (XLSX)' },
+  { value: 'xlsx', label: 'XLSX' },
 ];
 
 /**
- * Search and filter bar component with debounced search and Radix Select.
+ * Search pill with debounced input, plus type chips: five options read faster as chips than inside a select.
  */
 export function SearchFilterBar({
   onSearchChange,
@@ -45,25 +43,28 @@ export function SearchFilterBar({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-      {/* Search Input */}
-      <div className="relative flex-1 w-full sm:max-w-md">
+    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
+      <div className="relative w-full lg:max-w-md">
         <Search
           size={18}
-          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-500 pointer-events-none"
+          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-soft"
+          aria-hidden="true"
         />
         <input
           id="search-reports"
-          type="text"
-          placeholder="Buscar relatórios..."
+          type="search"
+          placeholder="Procurar pelo nome do arquivo"
+          aria-label="Buscar relatórios"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="input-field pl-10 pr-10"
+          className="input-field pl-11 pr-12 [&::-webkit-search-cancel-button]:hidden"
         />
         {searchValue && (
           <button
+            type="button"
             onClick={clearSearch}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-500 hover:text-white transition-colors"
+            className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full
+                       text-ink-soft transition-colors hover:bg-tile hover:text-ink"
             aria-label="Limpar busca"
           >
             <X size={16} />
@@ -71,58 +72,33 @@ export function SearchFilterBar({
         )}
       </div>
 
-      {/* Type Filter (Radix Select) */}
-      <Select.Root
-        value={currentType}
-        onValueChange={(val) => onTypeChange(val as ReportType | 'all')}
+      <div
+        id="filter-type"
+        role="group"
+        aria-label="Filtrar por tipo"
+        className="-mx-4 flex min-w-0 gap-2 overflow-x-auto px-4 py-1 sm:mx-0 sm:px-0"
       >
-        <Select.Trigger
-          id="filter-type"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-surface-800/50 border border-surface-700/50 
-                     rounded-xl text-sm text-surface-300 hover:text-white hover:border-surface-600 
-                     focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 
-                     transition-all duration-200 min-w-[160px] justify-between"
-          aria-label="Filtrar por tipo"
-        >
-          <div className="flex items-center gap-2">
-            <Filter size={16} className="text-surface-500" />
-            <Select.Value />
-          </div>
-          <Select.Icon>
-            <ChevronDownIcon />
-          </Select.Icon>
-        </Select.Trigger>
+        {typeOptions.map((option) => {
+          const isActive = currentType === option.value;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={isActive}
+              onClick={() => onTypeChange(option.value)}
+              className={`btn h-10 shrink-0 px-4 text-sm font-semibold ${
+                isActive
+                  ? 'bg-ink text-white'
+                  : 'border border-line bg-card text-ink hover:border-ink-soft'
+              }`}
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
 
-        <Select.Portal>
-          <Select.Content
-            className="bg-surface-800 border border-surface-700/50 rounded-xl shadow-2xl overflow-hidden z-50 
-                       animate-slide-down backdrop-blur-xl"
-            position="popper"
-            sideOffset={6}
-          >
-            <Select.Viewport className="p-1.5">
-              {typeOptions.map((option) => (
-                <Select.Item
-                  key={option.value}
-                  value={option.value}
-                  className="flex items-center gap-2 px-3 py-2.5 text-sm text-surface-300 
-                             rounded-lg cursor-pointer outline-none
-                             data-[highlighted]:bg-brand-500/15 data-[highlighted]:text-white
-                             transition-colors duration-150"
-                >
-                  <Select.ItemText>{option.label}</Select.ItemText>
-                  <Select.ItemIndicator className="ml-auto">
-                    <CheckIcon />
-                  </Select.ItemIndicator>
-                </Select.Item>
-              ))}
-            </Select.Viewport>
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
-
-      {/* Results Count */}
-      <span className="text-sm text-surface-500 whitespace-nowrap hidden sm:block">
+      <span className="whitespace-nowrap text-sm font-semibold tabular-nums text-ink-soft lg:ml-auto">
         {resultCount} relatório{resultCount !== 1 ? 's' : ''}
       </span>
     </div>

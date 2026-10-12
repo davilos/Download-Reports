@@ -78,6 +78,42 @@ describe('UploadButton', () => {
     expect(mockUpload).not.toHaveBeenCalled();
   });
 
+  it('uploads a file dropped on the drop zone', () => {
+    render(<UploadButton />);
+    openDialog();
+
+    const file = makeFile(1024);
+    fireEvent.drop(screen.getByRole('button', { name: 'Clique para selecionar um arquivo' }), {
+      dataTransfer: { files: [file] },
+    });
+
+    expect(mockUpload).toHaveBeenCalledTimes(1);
+    expect(mockUpload).toHaveBeenCalledWith(file);
+  });
+
+  it('rejects a dropped file larger than 50MB with the correct message and does not call upload', () => {
+    render(<UploadButton />);
+    openDialog();
+
+    fireEvent.drop(screen.getByRole('button', { name: 'Clique para selecionar um arquivo' }), {
+      dataTransfer: { files: [makeFile(52_428_801)] },
+    });
+
+    expect(screen.getByText('Arquivo muito grande (máx. 50 MB)')).toBeInTheDocument();
+    expect(mockUpload).not.toHaveBeenCalled();
+  });
+
+  it('ignores a drop that carries no file', () => {
+    render(<UploadButton />);
+    openDialog();
+
+    fireEvent.drop(screen.getByRole('button', { name: 'Clique para selecionar um arquivo' }), {
+      dataTransfer: { files: [] },
+    });
+
+    expect(mockUpload).not.toHaveBeenCalled();
+  });
+
   // Done when: renderiza todos os 6 estados (idle, requesting, uploading, success, error, ttl-expired)
   it('renders all 6 upload states with their expected content', () => {
     const cases: Array<{ status: string; progress?: number; error?: string | null; expected: string }> = [

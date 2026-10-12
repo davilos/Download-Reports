@@ -55,6 +55,8 @@ pids
 .design/
 .harness-eval/
 .agents/.skill-lock.json.backup
+.impeccable/review/
+.impeccable/questions/
 
 # Local one-off scripts
 backend/setup-t1-t8.sh

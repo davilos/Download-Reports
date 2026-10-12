@@ -128,6 +128,65 @@ describe('ReportsTable', () => {
     expect(within(nameCell).getByText('PDF')).toBeInTheDocument();
   });
 
+  it('renders createdAt as a focusable time element so keyboard and touch can open the tooltip', () => {
+    renderTable([availableReport]);
+
+    const time = within(cellInColumn('Data de Envio')).getByText('Há 12 min');
+    expect(time.tagName).toBe('TIME');
+    expect(time).toHaveAttribute('dateTime', '2026-10-08T12:00:00.000Z');
+    expect(time).toHaveAttribute('tabindex', '0');
+  });
+
+  it('renders the full createdAt date in the cell for touch screens when the date is relative', () => {
+    renderTable([availableReport]);
+
+    expect(within(cellInColumn('Data de Envio')).getByText(formatDate('2026-10-08T12:00:00.000Z'))).toBeInTheDocument();
+  });
+
+  it('renders the date once when it is already absolute', () => {
+    const oldReport = { ...availableReport, createdAt: '2026-09-01T12:00:00.000Z' };
+    renderTable([oldReport]);
+
+    expect(within(cellInColumn('Data de Envio')).getAllByText(formatDate(oldReport.createdAt))).toHaveLength(1);
+  });
+
+  it('allows the fileName to wrap after each separator but keeps the extension attached', () => {
+    renderTable([{ ...availableReport, fileName: 'Relatorio_Q3-2026.v2.xlsx' }]);
+
+    const name = within(cellInColumn('Nome do Arquivo')).getByText('Relatorio_Q3-2026.v2.xlsx');
+    expect(name.querySelectorAll('wbr')).toHaveLength(3);
+    expect(name.lastChild?.textContent).toBe('v2.xlsx');
+  });
+
+  it('wraps the disabled download button in a focusable tooltip trigger', () => {
+    renderTable([{ ...availableReport, status: 'PENDING' }]);
+
+    const button = within(cellInColumn('Ações')).getByRole('button');
+    expect(button.parentElement).toHaveAttribute('tabindex', '0');
+  });
+
+  it('adds no extra tab stop around an enabled download button', () => {
+    renderTable([availableReport]);
+
+    const button = within(cellInColumn('Ações')).getByRole('button');
+    expect(button.parentElement).not.toHaveAttribute('tabindex');
+  });
+
+  it.each([
+    ['PENDING', 'Aguardando'],
+    ['ERROR', 'Indisponível'],
+  ] as const)('labels the unavailable download button for %s as %s', (status, label) => {
+    renderTable([{ ...availableReport, status }]);
+
+    expect(within(cellInColumn('Ações')).getByRole('button')).toHaveTextContent(label);
+  });
+
+  it('labels the available download button Baixar', () => {
+    renderTable([availableReport]);
+
+    expect(within(cellInColumn('Ações')).getByRole('button')).toHaveTextContent('Baixar');
+  });
+
   it('renders the status label in the Status column', () => {
     renderTable([{ ...availableReport, status: 'PENDING' }]);
 

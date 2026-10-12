@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:#EEF0F5;color:#14254A;font:14px/1.45 Archivo,system-ui,sans-serif}
+.cap{font-stretch:75%;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.carbon{font-family:'Courier Prime',monospace;font-weight:700;color:#5B3F8C}
+header{background:#14254A;color:#fff;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:4px solid #C8102E}
+header b{font-size:22px;font-weight:800;font-stretch:90%}
+.btn{height:42px;padding:0 20px;background:#C8102E;color:#fff;font-weight:800;border:0}
+main{padding:24px 40px}
+.tools{display:flex;gap:10px;align-items:center;margin-bottom:16px}
+.in{width:420px;height:42px;background:#fff;border:1px solid #14254A;padding:0 12px;display:flex;align-items:center}
+.tab{height:42px;padding:0 14px;border:1px solid #14254A;display:flex;align-items:center;font-weight:700;background:#fff}
+.tab.on{background:#14254A;color:#fff}
+.cnt{margin-left:auto;font-weight:700}
+.coupons{display:grid;gap:8px}
+.cp{display:grid;grid-template-columns:96px 1fr 170px 120px 170px 150px;background:#fff;border:1px solid #14254A;align-items:stretch}
+.cp>div{padding:10px 14px;border-right:1px dashed #14254A;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.cp>div:last-child{border-right:0;align-items:flex-end}
+.stub{background:#14254A;color:#fff;align-items:center!important}
+.stub .carbon{color:#fff;font-size:16px}
+.fn{font-weight:800;font-size:15px}
+.stamp{align-self:flex-start;border:2px solid #14254A;padding:1px 8px;font-weight:800;font-stretch:80%;letter-spacing:.08em;font-size:12px}
+.stamp.p{border-color:#C8102E;color:#C8102E;border-style:dashed}
+.dl{height:34px;padding:0 16px;border:1.5px solid #14254A;background:#fff;font-weight:800}
+.dl.off{border-style:dashed;font-weight:500}
+</style></head><body>
+<header><b>Central de Relatórios</b><button class="btn">↑ Enviar relatório</button></header>
+<main>
+ <div class="tools"><div class="in">Buscar por nome do arquivo</div><span class="tab on">Todos</span><span class="tab">PDF</span><span class="tab">XML</span><span class="tab">CSV</span><span class="tab">XLSX</span><span class="cnt">128 cupons</span></div>
+ <div class="coupons">
+  <div class="cp"><div class="stub"><span class="cap">Tipo</span><span class="carbon">XML</span></div><div><span class="cap">Arquivo</span><span class="fn">NFe_35241012345678000190550010000123451.xml</span></div><div><span class="cap">Enviado</span><span class="carbon">11 OUT 14:28</span></div><div><span class="cap">Tamanho</span><span class="carbon">38,2 KB</span></div><div><span class="cap">Situação</span><span class="stamp p">AGUARDANDO</span></div><div><button class="dl off">Indisponível</button></div></div>
+  <div class="cp"><div class="stub"><span class="cap">Tipo</span><span class="carbon">PDF</span></div><div><span class="cap">Arquivo</span><span class="fn">DANFE_000123450_Fornecedor-Alfa.pdf</span></div><div><span class="cap">Enviado</span><span class="carbon">11 OUT 12:41</span></div><div><span class="cap">Tamanho</span><span class="carbon">412,6 KB</span></div><div><span class="cap">Situação</span><span class="stamp">VALIDADO</span></div><div><button class="dl">↓ Baixar</button></div></div>
+  <div class="cp"><div class="stub"><span class="cap">Tipo</span><span class="carbon">XLSX</span></div><div><span class="cap">Arquivo</span><span class="fn">Balancete_Setembro_2026.xlsx</span></div><div><span class="cap">Enviado</span><span class="carbon">10 OUT 09:15</span></div><div><span class="cap">Tamanho</span><span class="carbon">2,4 MB</span></div><div><span class="cap">Situação</span><span class="stamp">VALIDADO</span></div><div><button class="dl">↓ Baixar</button></div></div>
+  <div class="cp"><div class="stub"><span class="cap">Tipo</span><span class="carbon">CSV</span></div><div><span class="cap">Arquivo</span><span class="fn">Apuracao_ICMS_2026-09.csv</span></div><div><span class="cap">Enviado</span><span class="carbon">08 OUT 17:02</span></div><div><span class="cap">Tamanho</span><span class="carbon">864,0 KB</span></div><div><span class="cap">Situação</span><span class="stamp">VALIDADO</span></div><div><button class="dl">↓ Baixar</button></div></div>
+  <div class="cp"><div class="stub"><span class="cap">Tipo</span><span class="carbon">XML</span></div><div><span class="cap">Arquivo</span><span class="fn">SPED_Fiscal_EFD_092026.xml</span></div><div><span class="cap">Enviado</span><span class="carbon">02 OUT 08:47</span></div><div><span class="cap">Tamanho</span><span class="carbon">18,7 MB</span></div><div><span class="cap">Situação</span><span class="stamp">VALIDADO</span></div><div><button class="dl">↓ Baixar</button></div></div>
+  <div class="cp"><div class="stub"><span class="cap">Tipo</span><span class="carbon">PDF</span></div><div><span class="cap">Arquivo</span><span class="fn">Guia_DARF_Setembro.pdf</span></div><div><span class="cap">Enviado</span><span class="carbon">29 SET 16:20</span></div><div><span class="cap">Tamanho</span><span class="carbon">96,1 KB</span></div><div><span class="cap">Situação</span><span class="stamp">VALIDADO</span></div><div><button class="dl">↓ Baixar</button></div></div>
+ </div>
+</main>
+</body></html>

@@ -63,14 +63,14 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | Path | Responsibility |
 | ---- | -------------- |
 | `main.tsx`, `App.tsx` | Entry point; renders `ReportsPage` (single page, no router). |
-| `pages/ReportsPage.tsx` | Composes header, filters, table, pagination, upload button and error states. |
-| `components/reports/` | Feature components: `ReportsTable`, `SearchFilterBar` (300 ms debounce), `Pagination`, `UploadButton`. |
-| `components/ui/`, `components/layout/` | Presentational primitives (`Badge`, `StatusDot`, `FileTypeIcon`, `EmptyState`, `TableSkeleton`) and `Header`. |
+| `pages/ReportsPage.tsx` | Composes header (whose upload action becomes a fixed bottom bar on phones), filters, the report card grid (12 per page, which fills the 3- and 2-column grids), pagination and error states. |
+| `components/reports/` | Feature components: `ReportsTable` (report cards built on a `<table>` with explicit ARIA roles, so the grid stays a data table for assistive tech and tests), `SearchFilterBar` (300 ms debounce, type chips), `Pagination`, `UploadButton` (dialog on desktop, bottom sheet on phones, progress ring). |
+| `components/ui/`, `components/layout/` | Presentational primitives (`StatusDot`, `EmptyState`, `TableSkeleton`) and `Header` (title, subtitle and an `action` slot). |
 | `hooks/` | Client-side application logic: `useUpload` (validation, PUT with progress, auto-retry, `ttl-expired`), `useDownload` (link on click, `<a download>`), `useReports` (filters, pagination, refetch). |
 | `api/` | HTTP adapters, one function per endpoint. `client.ts`: axios with `baseURL: '/api'`, 30 s timeout, JWT from `localStorage.token`. `upload.ts` uses raw axios for the S3 PUT. |
 | `types/report.ts` | Frontend mirror of the API contract (see below). |
-| `utils/format.ts` | Display formatting: file size, dates (absolute/relative), type colours, status labels. |
-| `index.css`, `../tailwind.config.js`, `../postcss.config.js` | Styling and design tokens. |
+| `utils/format.ts` | Display formatting: file size, dates (absolute/relative), status labels. |
+| `index.css`, `../tailwind.config.js`, `../postcss.config.js` | Styling and design tokens (`ground`, `card`, `tile`, `line`, `ink`, `action`, `ok`, `warn`, `danger`); the visual system they implement is recorded in the root `DESIGN.md`. |
 | `../vite.config.ts` | Build and dev server. There is **no `/api` proxy**, so in dev the SPA (`:5173`) cannot reach the API (`:3000`) without one. |
 
 ### Tests
@@ -95,6 +95,7 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
 | `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
 | `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |
+| `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design context for the `impeccable` skill: product truth, the visual system (tokens, components, rules) with its machine-readable sidecar `.impeccable/design.json`, surface briefs holding each surface's direction contract, and the decision sketches. `.impeccable/review/` (screenshots) and `.impeccable/questions/` (decision-page logs) are gitignored. |
 
 ## Build & test commands
 

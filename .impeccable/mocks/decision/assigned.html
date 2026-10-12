@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Red+Hat+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:#FAFAF7;color:#121212;font:14px/1.4 Archivo,system-ui,sans-serif}
+.mono{font-family:'Red Hat Mono',monospace;font-variant-numeric:tabular-nums}
+.lbl{font-stretch:75%;font-weight:600;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+header{background:#0B5D47;color:#FAFAF7;height:64px;display:flex;align-items:stretch;padding:0 40px}
+.brand{display:flex;align-items:center;gap:16px;border-right:1px solid #FAFAF7;padding-right:20px}
+.brand b{font-size:22px;font-weight:800;font-stretch:88%;letter-spacing:-.01em}
+.brand span{border:1px solid #FAFAF7;padding:3px 8px}
+.hmeta{display:flex;align-items:center;padding-left:20px;gap:28px}
+.hmeta div{display:flex;flex-direction:column}
+.hmeta strong{font-size:14px;font-weight:600}
+main{padding:24px 40px 0}
+.recibo{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;border:1px solid #121212;background:#fff}
+.recibo>div{padding:10px 14px;border-right:1px solid #121212;display:flex;flex-direction:column;gap:4px}
+.recibo>div:last-child{border-right:0;justify-content:center}
+.recibo .big{font-size:18px;font-weight:700}
+.drop{background:#E3EEE8}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;background:#0B5D47;color:#FAFAF7;font-weight:700;border:0;font-size:14px}
+.cut{display:flex;align-items:center;gap:10px;margin:18px 0;color:#121212}
+.cut i{flex:1;border-top:1.5px dashed #121212}
+.tools{display:flex;gap:16px;align-items:flex-end;margin-bottom:12px}
+.field{border:1px solid #121212;background:#fff;padding:6px 12px;width:420px}
+.field p{font-size:15px}
+.seg{display:flex;border:1px solid #121212;height:46px}
+.seg span{padding:0 16px;display:flex;align-items:center;border-right:1px solid #121212;font-weight:600}
+.seg span:last-child{border-right:0}
+.seg .on{background:#121212;color:#FAFAF7}
+.count{margin-left:auto;font-weight:600}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #121212}
+th{text-align:left;padding:8px 14px;border-bottom:1.5px solid #121212}
+th.r,td.r{text-align:right}
+td{padding:9px 14px;border-bottom:1px solid #121212;vertical-align:middle}
+.fn{font-weight:700;font-size:14.5px}
+.ld{font-size:12px;letter-spacing:.02em}
+.type{display:inline-block;border:1px solid #121212;padding:0 5px;font-size:10.5px;font-weight:700;margin-right:6px}
+.bar{height:4px;background:#121212;margin-top:4px;margin-left:auto}
+.st{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.sq{width:10px;height:10px;background:#0B5D47}
+.pend{color:#B54708}.pend .sq{background:repeating-linear-gradient(45deg,#B54708 0 2px,transparent 2px 4px);border:1px solid #B54708}
+.exp{text-decoration:line-through}.exp .sq{background:none;border:1.5px solid #121212}
+.dl{height:34px;width:112px;border:1.5px solid #121212;background:#fff;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.dl.off{border-style:dashed;font-weight:500}
+.aut{font-size:11px;color:#0B5D47}
+</style></head><body>
+<header>
+ <div class="brand"><b>Central de Relatórios</b><span class="lbl">Documentos fiscais</span></div>
+ <div class="hmeta"><div><span class="lbl">Arquivos guardados</span><strong class="mono">128</strong></div><div><span class="lbl">Link de download vale</span><strong class="mono">2 min</strong></div></div>
+</header>
+<main>
+ <section class="recibo">
+  <div class="drop"><span class="lbl">Recibo de envio</span><span class="big">Solte um arquivo aqui</span><span>ou selecione do computador</span></div>
+  <div><span class="lbl">Tipos aceitos</span><span class="big">PDF · XML · CSV · XLSX</span></div>
+  <div><span class="lbl">Tamanho máximo</span><span class="big mono">50 MB</span></div>
+  <div><span class="lbl">Validade do link de envio</span><span class="big mono">15 min</span></div>
+  <div><button class="btn">↑ Selecionar arquivo</button></div>
+ </section>
+ <div class="cut"><span>✂</span><i></i><span class="lbl">Ficha de arquivos</span></div>
+ <div class="tools">
+  <div class="field"><span class="lbl">Buscar por nome do arquivo</span><p>NFe_3524</p></div>
+  <div class="seg"><span class="on">Todos</span><span>PDF</span><span>XML</span><span>CSV</span><span>XLSX</span></div>
+  <span class="count mono">14 de 128 arquivos</span>
+ </div>
+ <table>
+  <thead><tr><th class="lbl">Nome do arquivo · Linha digitável</th><th class="lbl">Data de envio</th><th class="lbl r">Tamanho</th><th class="lbl">Situação</th><th class="lbl r">Baixar</th></tr></thead>
+  <tbody>
+   <tr><td><div class="fn"><span class="type">XML</span>NFe_35241012345678000190550010000123451.xml</div><div class="ld mono">3F2A9.C1B04 D74E8.A9B216 C0F5E.7D8A13</div></td><td class="mono">Há 4 min<br><span class="ld">11/10/2026 14:28</span></td><td class="r mono">38,2 KB<div class="bar" style="width:4px"></div></td><td><span class="st pend"><i class="sq"></i>Aguardando confirmação</span></td><td class="r"><span class="dl off">Indisponível</span></td></tr>
+   <tr><td><div class="fn"><span class="type">PDF</span>DANFE_000123450_Fornecedor-Alfa.pdf</div><div class="ld mono">8B1C0.4E2F9 A6D31.7C05E8 2F94B.D1A706</div></td><td class="mono">Há 2h<br><span class="ld">11/10/2026 12:41</span></td><td class="r mono">412,6 KB<div class="bar" style="width:6px"></div></td><td><span class="st"><i class="sq"></i>Disponível</span></td><td class="r"><span class="dl">↓ Baixar</span><div class="aut mono">AUT 11/10 14:31 BAIXADO</div></td></tr>
+   <tr><td><div class="fn"><span class="type">XLSX</span>Balancete_Setembro_2026.xlsx</div><div class="ld mono">C47D2.19F0A B3E86.0D5C21 7A9E4.F6B830</div></td><td class="mono">Há 1 dia<br><span class="ld">10/10/2026 09:15</span></td><td class="r mono">2,4 MB<div class="bar" style="width:12px"></div></td><td><span class="st"><i class="sq"></i>Disponível</span></td><td class="r"><span class="dl">↓ Baixar</span></td></tr>
+   <tr><td><div class="fn"><span class="type">CSV</span>Apuracao_ICMS_2026-09.csv</div><div class="ld mono">51E0B.A82C7 F4D19.3B60E5 C8A27.94DF1B</div></td><td class="mono">Há 3 dias<br><span class="ld">08/10/2026 17:02</span></td><td class="r mono">864,0 KB<div class="bar" style="width:8px"></div></td><td><span class="st"><i class="sq"></i>Disponível</span></td><td class="r"><span class="dl">↓ Baixar</span></td></tr>
+   <tr><td><div class="fn"><span class="type">XML</span>SPED_Fiscal_EFD_092026.xml</div><div class="ld mono">E92A6.0C4B1 D85F3.27A9C0 1B6E4.F0D352</div></td><td class="mono">02/10/2026<br><span class="ld">02/10/2026 08:47</span></td><td class="r mono">18,7 MB<div class="bar" style="width:88px"></div></td><td><span class="st"><i class="sq"></i>Disponível</span></td><td class="r"><span class="dl">↓ Baixar</span></td></tr>
+   <tr><td><div class="fn"><span class="type">PDF</span>Guia_DARF_Setembro.pdf</div><div class="ld mono">0D3F8.B51A2 6C97E.4A0B13 F2E58.C7D964</div></td><td class="mono">29/09/2026<br><span class="ld">29/09/2026 16:20</span></td><td class="r mono">96,1 KB<div class="bar" style="width:4px"></div></td><td><span class="st"><i class="sq"></i>Disponível</span></td><td class="r"><span class="dl">↓ Baixar</span></td></tr>
+  </tbody>
+ </table>
+</main>
+</body></html>

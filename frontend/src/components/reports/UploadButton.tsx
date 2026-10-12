@@ -1,5 +1,6 @@
 import { useRef, useCallback, useState } from 'react';
-import { Upload, X, CheckCircle, AlertCircle, Loader2, FileUp, Clock } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { Upload, X, CheckCircle, AlertCircle, FileUp, Clock } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useUpload } from '../../hooks';
 
@@ -13,28 +14,35 @@ const MAX_FILE_SIZE = 52_428_800; // 50 MB
 /**
  * Upload button that opens a Radix Dialog, lets the user pick a file, then
  * orchestrates the ephemeral-token upload flow (POST -> signed URL -> PUT -> confirm).
+ * Phones get the dialog as a bottom sheet; wider screens get it centred.
  */
 export function UploadButton({ onUploadSuccess }: UploadButtonProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { status, progress, error, upload, retryUpload, reset } = useUpload(onUploadSuccess);
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  const handleFileChange = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      // Reject oversized files locally, before any upload/backend call
+  // Picked and dropped files share one path, so the size check runs before any upload/backend call either way.
+  const handleFile = useCallback(
+    async (file: File) => {
       if (file.size > MAX_FILE_SIZE) {
         setValidationError('Arquivo muito grande (máx. 50 MB)');
-        if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }
       setValidationError(null);
       await upload(file);
+    },
+    [upload]
+  );
+
+  const handleFileChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      await handleFile(file);
       // Reset the file input so the same file can be re-selected
       if (fileInputRef.current) fileInputRef.current.value = '';
     },
-    [upload]
+    [handleFile]
   );
 
   const openPicker = () => fileInputRef.current?.click();
@@ -51,46 +59,34 @@ export function UploadButton({ onUploadSuccess }: UploadButtonProps) {
         }
       }}
     >
-      {/* Trigger Button */}
       <Dialog.Trigger asChild>
-        <button
-          id="upload-report-btn"
-          className="btn-primary gap-2 text-sm"
-          aria-label="Enviar relatório"
-        >
-          <Upload size={16} />
+        <button id="upload-report-btn" type="button" className="btn-primary text-[15px]" aria-label="Enviar relatório">
+          <Upload size={18} aria-hidden="true" />
           Enviar Relatório
         </button>
       </Dialog.Trigger>
 
-      {/* Modal */}
       <Dialog.Portal>
-        {/* Overlay */}
-        <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in" />
+        <Dialog.Overlay className="fixed inset-0 z-40 bg-ink/40 animate-fade-in" />
 
-        {/* Content */}
         <Dialog.Content
-          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50
-                     w-full max-w-md glass-card p-6 shadow-2xl animate-slide-up
-                     focus:outline-none"
+          className="fixed inset-x-0 bottom-0 z-50 rounded-t-[28px] bg-card px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]
+                     pt-6 shadow-dialog focus:outline-none max-sm:animate-sheet-in
+                     sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[calc(100%-2rem)] sm:max-w-md
+                     sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[28px] sm:p-7 sm:animate-dialog-in"
           aria-describedby="upload-dialog-description"
         >
-          {/* Header */}
-          <div className="flex items-start justify-between mb-6">
+          <div className="mb-6 flex items-start justify-between gap-4">
             <div>
-              <Dialog.Title className="text-lg font-semibold text-white">
-                Enviar Relatório
-              </Dialog.Title>
-              <Dialog.Description
-                id="upload-dialog-description"
-                className="text-sm text-surface-400 mt-1"
-              >
+              <Dialog.Title className="text-xl font-extrabold text-ink">Enviar Relatório</Dialog.Title>
+              <Dialog.Description id="upload-dialog-description" className="mt-1 text-sm text-ink-soft">
                 Selecione um arquivo PDF, XML, CSV ou XLSX para enviar.
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
               <button
-                className="btn-ghost p-1.5 -mt-1 -mr-1"
+                type="button"
+                className="btn-ghost -mr-2 -mt-1 h-10 w-10 shrink-0 p-0"
                 disabled={isLoading}
                 aria-label="Fechar"
               >
@@ -99,9 +95,8 @@ export function UploadButton({ onUploadSuccess }: UploadButtonProps) {
             </Dialog.Close>
           </div>
 
-          {/* Upload Zone / Status */}
           {status === 'idle' && !validationError && (
-            <DropZone onPickFile={openPicker} />
+            <DropZone onPickFile={openPicker} onDropFile={(file) => void handleFile(file)} />
           )}
 
           {status === 'idle' && validationError && (
@@ -112,19 +107,12 @@ export function UploadButton({ onUploadSuccess }: UploadButtonProps) {
             <ProgressState status={status} progress={progress} />
           )}
 
-          {status === 'success' && (
-            <SuccessState />
-          )}
+          {status === 'success' && <SuccessState />}
 
-          {status === 'error' && (
-            <ErrorState message={error} onRetry={reset} />
-          )}
+          {status === 'error' && <ErrorState message={error} onRetry={reset} />}
 
-          {status === 'ttl-expired' && (
-            <TtlExpiredState onRetry={retryUpload} />
-          )}
+          {status === 'ttl-expired' && <TtlExpiredState onRetry={retryUpload} />}
 
-          {/* Hidden file input */}
           <input
             ref={fileInputRef}
             id="upload-file-input"
@@ -135,24 +123,16 @@ export function UploadButton({ onUploadSuccess }: UploadButtonProps) {
             aria-hidden="true"
           />
 
-          {/* Footer Buttons */}
-          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-surface-700/30">
+          <div className="mt-6 flex justify-end gap-3 border-t border-line pt-5">
             <Dialog.Close asChild>
-              <button
-                className="btn-ghost text-sm px-4"
-                disabled={isLoading}
-              >
+              <button type="button" className="btn-secondary text-sm" disabled={isLoading}>
                 {isDone ? 'Fechar' : 'Cancelar'}
               </button>
             </Dialog.Close>
 
             {status === 'idle' && (
-              <button
-                id="upload-select-btn"
-                className="btn-primary text-sm"
-                onClick={openPicker}
-              >
-                <FileUp size={16} />
+              <button id="upload-select-btn" type="button" className="btn-primary text-sm" onClick={openPicker}>
+                <FileUp size={16} aria-hidden="true" />
                 Selecionar Arquivo
               </button>
             )}
@@ -165,27 +145,88 @@ export function UploadButton({ onUploadSuccess }: UploadButtonProps) {
 
 /* --- Sub-components --- */
 
-function DropZone({ onPickFile }: { onPickFile: () => void }) {
+function DropZone({ onPickFile, onDropFile }: { onPickFile: () => void; onDropFile: (file: File) => void }) {
+  const [isDragOver, setIsDragOver] = useState(false);
+
   return (
     <button
+      type="button"
       onClick={onPickFile}
-      className="w-full border-2 border-dashed border-surface-600/60 rounded-xl p-10
-                 flex flex-col items-center gap-3 cursor-pointer
-                 hover:border-brand-500/50 hover:bg-brand-500/5
-                 transition-all duration-300 group"
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragOver(true);
+      }}
+      onDragLeave={() => setIsDragOver(false)}
+      onDrop={(e) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        const file = e.dataTransfer.files[0];
+        if (file) onDropFile(file);
+      }}
+      className={`group flex w-full flex-col items-center gap-3 rounded-3xl border-2 border-dashed px-6 py-10
+                  transition-colors duration-200 ease-out-expo hover:border-action hover:bg-action-soft/50 ${
+                    isDragOver ? 'border-action bg-action-soft/60' : 'border-line bg-ground'
+                  }`}
       aria-label="Clique para selecionar um arquivo"
     >
-      <div className="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center
-                      group-hover:bg-brand-500/20 transition-colors duration-300">
-        <Upload size={26} className="text-brand-400" />
-      </div>
-      <div className="text-center">
-        <p className="text-sm font-medium text-surface-300 group-hover:text-white transition-colors">
-          Clique para selecionar
-        </p>
-        <p className="text-xs text-surface-500 mt-1">PDF, XML, CSV, XLSX &middot; máx. 50 MB</p>
-      </div>
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-card text-action shadow-card">
+        <Upload size={24} aria-hidden="true" />
+      </span>
+      <span className="text-center">
+        <span className="block text-[15px] font-bold text-ink">Clique para selecionar</span>
+        {/* Touch browsers offer no file drag, so the hint only shows with a fine pointer. */}
+        <span className="mt-1 hidden text-xs text-ink-soft [@media(pointer:fine)]:block">ou arraste o arquivo para cá</span>
+        <span className="mt-2 block text-xs font-semibold text-ink-soft">PDF, XML, CSV, XLSX &middot; máx. 50 MB</span>
+      </span>
     </button>
+  );
+}
+
+const RING_RADIUS = 46;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
+/** Upload progress drawn as a filling ring; requesting spins a short arc because no percentage exists yet. */
+function ProgressRing({ status, progress }: { status: 'requesting' | 'uploading' | 'confirming'; progress: number }) {
+  const filled = status === 'confirming' ? 100 : status === 'uploading' ? progress : 22;
+  const offset = RING_CIRCUMFERENCE * (1 - filled / 100);
+
+  return (
+    <div
+      className="relative h-28 w-28"
+      role="progressbar"
+      aria-label="Progresso do envio"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={status === 'requesting' ? undefined : filled}
+    >
+      <svg
+        viewBox="0 0 112 112"
+        className={`h-full w-full -rotate-90 ${status === 'requesting' ? 'animate-spin-slow' : ''}`}
+        aria-hidden="true"
+      >
+        <circle cx="56" cy="56" r={RING_RADIUS} fill="none" strokeWidth="10" className="stroke-tile" />
+        <circle
+          cx="56"
+          cy="56"
+          r={RING_RADIUS}
+          fill="none"
+          strokeWidth="10"
+          strokeLinecap="round"
+          strokeDasharray={RING_CIRCUMFERENCE}
+          strokeDashoffset={offset}
+          className="stroke-action transition-[stroke-dashoffset] duration-500 ease-out-expo"
+        />
+      </svg>
+      {status === 'uploading' && (
+        <span
+          className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold tabular-nums text-ink"
+          aria-hidden="true"
+        >
+          {progress}
+          <span className="text-sm">%</span>
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -204,97 +245,90 @@ function ProgressState({
       : `Enviando arquivo... ${progress}%`;
 
   return (
-    <div className="flex flex-col items-center gap-5 py-6">
-      <div className="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center">
-        <Loader2 size={26} className="text-brand-400 animate-spin" />
-      </div>
-      <div className="w-full space-y-2">
-        <p className="text-sm text-surface-300 text-center">{label}</p>
-        {status === 'uploading' && (
-          <div className="w-full h-2 bg-surface-800 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-brand-500 to-purple-500 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
-      </div>
+    <div className="flex flex-col items-center gap-4 py-4" aria-live="polite">
+      <ProgressRing status={status} progress={progress} />
+      <p className="text-center text-sm font-bold text-ink">{label}</p>
+    </div>
+  );
+}
+
+function StateLayout({
+  tone,
+  icon,
+  children,
+}: {
+  tone: 'ok' | 'danger' | 'warn';
+  icon: ReactNode;
+  children: ReactNode;
+}) {
+  const toneClasses = {
+    ok: 'bg-ok-soft text-ok',
+    danger: 'bg-danger-soft text-danger',
+    warn: 'bg-warn-soft text-warn',
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-4 py-4 text-center animate-fade-in" aria-live="polite">
+      <span className={`flex h-14 w-14 items-center justify-center rounded-2xl ${toneClasses[tone]}`} aria-hidden="true">
+        {icon}
+      </span>
+      {children}
     </div>
   );
 }
 
 function SuccessState() {
   return (
-    <div className="flex flex-col items-center gap-4 py-6 animate-fade-in">
-      <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-        <CheckCircle size={26} className="text-emerald-400" />
+    <StateLayout tone="ok" icon={<CheckCircle size={26} />}>
+      <div>
+        <p className="text-[15px] font-extrabold text-ink">Upload concluído!</p>
+        <p className="mt-1 text-sm text-ink-soft">Arquivo enviado com sucesso.</p>
       </div>
-      <div className="text-center">
-        <p className="text-sm font-semibold text-white">Upload concluído!</p>
-        <p className="text-xs text-surface-400 mt-1">Arquivo enviado com sucesso.</p>
-      </div>
-    </div>
+    </StateLayout>
   );
 }
 
 function ErrorState({ message, onRetry }: { message: string | null; onRetry: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-4 py-6 animate-fade-in">
-      <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center">
-        <AlertCircle size={26} className="text-red-400" />
+    <StateLayout tone="danger" icon={<AlertCircle size={26} />}>
+      <div>
+        <p className="text-[15px] font-extrabold text-ink">Falha no upload</p>
+        {message && <p className="mt-1 max-w-xs text-sm text-danger">{message}</p>}
       </div>
-      <div className="text-center">
-        <p className="text-sm font-semibold text-white">Falha no upload</p>
-        {message && (
-          <p className="text-xs text-red-400/80 mt-1 max-w-xs">{message}</p>
-        )}
-      </div>
-      <button onClick={onRetry} className="btn-primary text-sm mt-1">
-        <Upload size={15} />
+      <button type="button" onClick={onRetry} className="btn-primary text-sm">
+        <Upload size={15} aria-hidden="true" />
         Tentar novamente
       </button>
-    </div>
+    </StateLayout>
   );
 }
 
 function ValidationErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-4 py-6 animate-fade-in">
-      <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center">
-        <AlertCircle size={26} className="text-red-400" />
+    <StateLayout tone="danger" icon={<AlertCircle size={26} />}>
+      <div>
+        <p className="text-[15px] font-extrabold text-ink">Arquivo inválido</p>
+        <p className="mt-1 max-w-xs text-sm text-danger">{message}</p>
       </div>
-      <div className="text-center">
-        <p className="text-sm font-semibold text-white">Arquivo inválido</p>
-        <p className="text-xs text-red-400/80 mt-1 max-w-xs">{message}</p>
-      </div>
-      <button onClick={onRetry} className="btn-primary text-sm mt-1">
-        <Upload size={15} />
+      <button type="button" onClick={onRetry} className="btn-primary text-sm">
+        <Upload size={15} aria-hidden="true" />
         Tentar novamente
       </button>
-    </div>
+    </StateLayout>
   );
 }
 
 function TtlExpiredState({ onRetry }: { onRetry: () => Promise<void> }) {
   return (
-    <div className="flex flex-col items-center gap-4 py-6 animate-fade-in">
-      <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center">
-        <Clock size={26} className="text-amber-400" />
+    <StateLayout tone="warn" icon={<Clock size={26} />}>
+      <div>
+        <p className="text-[15px] font-extrabold text-ink">Tempo expirado — Tentar novamente</p>
+        <p className="mt-1 max-w-xs text-sm text-warn">O tempo para envio expirou. Tente novamente.</p>
       </div>
-      <div className="text-center">
-        <p className="text-sm font-semibold text-amber-300">Tempo expirado — Tentar novamente</p>
-        <p className="text-xs text-amber-400/80 mt-1 max-w-xs">
-          O tempo para envio expirou. Tente novamente.
-        </p>
-      </div>
-      <button
-        id="upload-retry-btn"
-        onClick={() => void onRetry()}
-        className="btn-primary text-sm mt-1 border-amber-500/30 text-amber-300 hover:text-white"
-      >
-        <Clock size={15} />
+      <button id="upload-retry-btn" type="button" onClick={() => void onRetry()} className="btn-primary text-sm">
+        <Clock size={15} aria-hidden="true" />
         Tentar novamente
       </button>
-    </div>
+    </StateLayout>
   );
 }
