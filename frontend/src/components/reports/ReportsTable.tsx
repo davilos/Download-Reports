@@ -62,6 +62,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
             const isDownloading = downloadingId === report.id;
             const isAvailable = report.status === 'AVAILABLE';
             const isDisabled = !isAvailable || isDownloading;
+            const label = downloadLabel(report, isDownloading);
 
             return (
               <tr
@@ -140,7 +141,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
                               ? 'bg-action text-white hover:bg-action-hover'
                               : 'pointer-events-none border border-dashed border-line font-semibold text-ink-soft'
                           } ${isDownloading ? 'pointer-events-none' : ''}`}
-                          aria-label={`Baixar ${report.fileName}`}
+                          aria-label={`${label} ${report.fileName}`}
                         >
                           {isDownloading ? (
                             <Loader2 size={16} className="animate-spin" aria-hidden="true" />
@@ -149,7 +150,7 @@ export function ReportsTable({ reports, onDownload, downloadingId }: ReportsTabl
                           ) : (
                             <Clock size={16} aria-hidden="true" />
                           )}
-                          {downloadLabel(report, isDownloading)}
+                          {label}
                         </button>
                       </span>
                     </Tooltip.Trigger>

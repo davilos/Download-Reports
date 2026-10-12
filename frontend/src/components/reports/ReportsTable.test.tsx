@@ -187,6 +187,23 @@ describe('ReportsTable', () => {
     expect(within(cellInColumn('Ações')).getByRole('button')).toHaveTextContent('Baixar');
   });
 
+  it.each([
+    ['PENDING', 'Aguardando relatorio-vendas-outubro.pdf'],
+    ['ERROR', 'Indisponível relatorio-vendas-outubro.pdf'],
+  ] as const)('names the unavailable download button for %s with its visible label', (status, name) => {
+    renderTable([{ ...availableReport, status }]);
+
+    expect(within(cellInColumn('Ações')).getByRole('button')).toHaveAccessibleName(name);
+  });
+
+  it('names the download button with its visible label while downloading', () => {
+    render(<ReportsTable reports={[availableReport]} onDownload={mockOnDownload} downloadingId="r1" />);
+
+    expect(within(cellInColumn('Ações')).getByRole('button')).toHaveAccessibleName(
+      'Baixando relatorio-vendas-outubro.pdf',
+    );
+  });
+
   it('renders the status label in the Status column', () => {
     renderTable([{ ...availableReport, status: 'PENDING' }]);
 
