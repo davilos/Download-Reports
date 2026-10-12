@@ -95,7 +95,7 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
 | `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
 | `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |
-| `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design context for the `impeccable` skill: product truth, the visual system (tokens, components, rules) with its machine-readable sidecar `.impeccable/design.json`, surface briefs holding each surface's direction contract, and the decision sketches. `.impeccable/review/` (screenshots) and `.impeccable/questions/` (decision-page logs) are gitignored. |
+| `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design context for the `impeccable` skill: product truth, the visual system (tokens, components, rules) with its machine-readable sidecar `.impeccable/design.json`, and surface briefs holding each surface's direction contract. `.impeccable/mocks/` (decision sketches), `.impeccable/review/` (screenshots) and `.impeccable/questions/` (decision-page logs) are local working files and gitignored. |
 
 ## Build & test commands
 
