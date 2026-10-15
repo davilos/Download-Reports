@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T00:00:00.000Z",
+  "title": "Design System: Central de Relatórios",
+  "extensions": {
+    "colorMeta": {
+      "action": { "role": "primary", "displayName": "Burnt Action Orange", "canonical": "oklch(57% 0.18 37)", "tonalRamp": ["oklch(15% 0.090 37)", "oklch(25% 0.090 37)", "oklch(35% 0.180 37)", "oklch(45% 0.180 37)", "oklch(55% 0.180 37)", "oklch(70% 0.180 37)", "oklch(85% 0.180 37)", "oklch(95% 0.090 37)"] },
+      "action-hover": { "role": "primary", "displayName": "Deep Orange", "canonical": "oklch(52% 0.165 37)", "tonalRamp": ["oklch(15% 0.083 37)", "oklch(25% 0.083 37)", "oklch(35% 0.165 37)", "oklch(45% 0.165 37)", "oklch(55% 0.165 37)", "oklch(70% 0.165 37)", "oklch(85% 0.165 37)", "oklch(95% 0.083 37)"] },
+      "action-soft": { "role": "primary", "displayName": "Orange Blush", "canonical": "oklch(93% 0.03 45)", "tonalRamp": ["oklch(15% 0.030 45)", "oklch(25% 0.030 45)", "oklch(35% 0.060 45)", "oklch(45% 0.060 45)", "oklch(55% 0.060 45)", "oklch(70% 0.060 45)", "oklch(85% 0.060 45)", "oklch(95% 0.030 45)"] },
+      "ground": { "role": "neutral", "displayName": "Oatmeal Ground", "canonical": "oklch(96% 0.012 75)", "tonalRamp": ["oklch(15% 0.006 75)", "oklch(25% 0.006 75)", "oklch(35% 0.012 75)", "oklch(45% 0.012 75)", "oklch(55% 0.012 75)", "oklch(70% 0.012 75)", "oklch(85% 0.012 75)", "oklch(95% 0.006 75)"] },
+      "card": { "role": "neutral", "displayName": "Card White", "canonical": "oklch(100% 0 0)", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(70% 0 0)", "oklch(85% 0 0)", "oklch(95% 0 0)"] },
+      "tile": { "role": "neutral", "displayName": "Beige Tile", "canonical": "oklch(93% 0.017 75)", "tonalRamp": ["oklch(15% 0.009 75)", "oklch(25% 0.009 75)", "oklch(35% 0.017 75)", "oklch(45% 0.017 75)", "oklch(55% 0.017 75)", "oklch(70% 0.017 75)", "oklch(85% 0.017 75)", "oklch(95% 0.009 75)"] },
+      "line": { "role": "neutral", "displayName": "Sand Line", "canonical": "oklch(89% 0.02 72)", "tonalRamp": ["oklch(15% 0.010 72)", "oklch(25% 0.010 72)", "oklch(35% 0.020 72)", "oklch(45% 0.020 72)", "oklch(55% 0.020 72)", "oklch(70% 0.020 72)", "oklch(85% 0.020 72)", "oklch(95% 0.010 72)"] },
+      "ink": { "role": "neutral", "displayName": "Warm Ink", "canonical": "oklch(27% 0.008 60)", "tonalRamp": ["oklch(15% 0.005 60)", "oklch(25% 0.005 60)", "oklch(35% 0.010 60)", "oklch(45% 0.010 60)", "oklch(55% 0.010 60)", "oklch(70% 0.010 60)", "oklch(85% 0.010 60)", "oklch(95% 0.005 60)"] },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "oklch(50% 0.017 60)", "tonalRamp": ["oklch(15% 0.009 60)", "oklch(25% 0.009 60)", "oklch(35% 0.017 60)", "oklch(45% 0.017 60)", "oklch(55% 0.017 60)", "oklch(70% 0.017 60)", "oklch(85% 0.017 60)", "oklch(95% 0.009 60)"] },
+      "ok": { "role": "state", "displayName": "Ledger Green", "canonical": "oklch(52% 0.11 152)", "tonalRamp": ["oklch(15% 0.055 152)", "oklch(25% 0.055 152)", "oklch(35% 0.110 152)", "oklch(45% 0.110 152)", "oklch(55% 0.110 152)", "oklch(70% 0.110 152)", "oklch(85% 0.110 152)", "oklch(95% 0.055 152)"] },
+      "ok-soft": { "role": "state", "displayName": "Mint Wash", "canonical": "oklch(94% 0.025 152)", "tonalRamp": ["oklch(15% 0.025 152)", "oklch(25% 0.025 152)", "oklch(35% 0.050 152)", "oklch(45% 0.050 152)", "oklch(55% 0.050 152)", "oklch(70% 0.050 152)", "oklch(85% 0.050 152)", "oklch(95% 0.025 152)"] },
+      "warn": { "role": "state", "displayName": "Bronze Text", "canonical": "oklch(50% 0.11 70)", "tonalRamp": ["oklch(15% 0.055 70)", "oklch(25% 0.055 70)", "oklch(35% 0.110 70)", "oklch(45% 0.110 70)", "oklch(55% 0.110 70)", "oklch(70% 0.110 70)", "oklch(85% 0.110 70)", "oklch(95% 0.055 70)"] },
+      "warn-dot": { "role": "state", "displayName": "Honey Dot", "canonical": "oklch(72% 0.15 78)", "tonalRamp": ["oklch(15% 0.075 78)", "oklch(25% 0.075 78)", "oklch(35% 0.150 78)", "oklch(45% 0.150 78)", "oklch(55% 0.150 78)", "oklch(70% 0.150 78)", "oklch(85% 0.150 78)", "oklch(95% 0.075 78)"] },
+      "warn-soft": { "role": "state", "displayName": "Cream Wash", "canonical": "oklch(95% 0.04 85)", "tonalRamp": ["oklch(15% 0.030 85)", "oklch(25% 0.030 85)", "oklch(35% 0.060 85)", "oklch(45% 0.060 85)", "oklch(55% 0.060 85)", "oklch(70% 0.060 85)", "oklch(85% 0.060 85)", "oklch(95% 0.030 85)"] },
+      "danger": { "role": "state", "displayName": "Brick Red", "canonical": "oklch(50% 0.19 30)", "tonalRamp": ["oklch(15% 0.095 30)", "oklch(25% 0.095 30)", "oklch(35% 0.190 30)", "oklch(45% 0.190 30)", "oklch(55% 0.190 30)", "oklch(70% 0.190 30)", "oklch(85% 0.190 30)", "oklch(95% 0.095 30)"] },
+      "danger-soft": { "role": "state", "displayName": "Rose Wash", "canonical": "oklch(93% 0.03 25)", "tonalRamp": ["oklch(15% 0.025 25)", "oklch(25% 0.025 25)", "oklch(35% 0.050 25)", "oklch(45% 0.050 25)", "oklch(55% 0.050 25)", "oklch(70% 0.050 25)", "oklch(85% 0.050 25)", "oklch(95% 0.025 25)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page title only; 26px on phones, 34px from 640px." },
+      "headline": { "displayName": "Headline", "purpose": "Dialog titles." },
+      "title": { "displayName": "Title", "purpose": "File name on a report card, clamped to 3 lines." },
+      "body": { "displayName": "Body", "purpose": "Base text; descriptions run 14px in ink-soft." },
+      "meta": { "displayName": "Meta", "purpose": "Dates, sizes, status words, counts, chips; tabular figures." },
+      "label": { "displayName": "Label", "purpose": "Field labels above a value, the footer, the phone exact-date line." },
+      "tile-label": { "displayName": "Tile label", "purpose": "Uppercase file extension inside the type tile." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 1px 2px rgba(42,38,34,0.04), 0 10px 24px -14px rgba(42,38,34,0.18)", "purpose": "Resting cards, empty/error card, skeletons, brand tile, drop-zone icon tile." },
+      { "name": "lift", "value": "0 2px 4px rgba(42,38,34,0.05), 0 18px 32px -16px rgba(42,38,34,0.24)", "purpose": "Card hover and tooltips." },
+      { "name": "dialog", "value": "0 4px 8px rgba(42,38,34,0.06), 0 32px 64px -24px rgba(42,38,34,0.35)", "purpose": "Upload dialog and bottom sheet, over a 40% ink scrim." },
+      { "name": "bar", "value": "0 -8px 24px -12px rgba(42,38,34,0.18)", "purpose": "Phone bottom action bar, cast upward." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Entrances, colour/border/shadow transitions and the ring fill; never overshoots." },
+      { "name": "ease-spring", "value": "cubic-bezier(0.34, 1.4, 0.64, 1)", "purpose": "Button press scale (0.97), 200ms; press feedback only." },
+      { "name": "fade-in", "value": "240ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Alerts, tooltips, scrim, dialog state swaps, empty card." },
+      { "name": "dialog-in", "value": "320ms cubic-bezier(0.16, 1, 0.3, 1); scale 0.98 to 1, -48% to -50%", "purpose": "Centred dialog entrance from 640px." },
+      { "name": "sheet-in", "value": "320ms cubic-bezier(0.16, 1, 0.3, 1); translateY 24px to 0", "purpose": "Bottom sheet entrance on phones." },
+      { "name": "card-hover", "value": "box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Card shadow to lift on hover." },
+      { "name": "ring-fill", "value": "stroke-dashoffset 500ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Upload ring tracking real progress." },
+      { "name": "spin-slow", "value": "spin 1.1s linear infinite", "purpose": "Indeterminate 22% arc while the upload URL is requested." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "All animation and transition durations under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Orange pill for actions that run now; loses the orange when disabled.",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"17 8 12 3 7 8\"/><line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\"/></svg>Enviar Relatório</button> <button class=\"ds-btn-primary\" disabled>Selecionar Arquivo</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border: none; border-radius: 9999px; background: #CC4520; color: #FFFFFF; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 200ms cubic-bezier(0.34,1.4,0.64,1), background-color 200ms cubic-bezier(0.16,1,0.3,1), color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background: #B33C1B; } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #F6F1EA, 0 0 0 4px #CC4520; } .ds-btn-primary:disabled { background: #EFE7DC; color: #6B6158; cursor: not-allowed; transform: none; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White pill with a sand hairline for Cancelar/Fechar and neutral retries.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border: 1px solid #E4DACD; border-radius: 9999px; background: #FFFFFF; color: #2A2622; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform 200ms cubic-bezier(0.34,1.4,0.64,1), border-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-secondary:hover { border-color: #6B6158; } .ds-btn-secondary:active { transform: scale(0.97); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #F6F1EA, 0 0 0 4px #CC4520; }"
+    },
+    {
+      "name": "Download Action",
+      "kind": "button",
+      "refersTo": "button-download",
+      "description": "Per-card action: orange Baixar when available, dashed neutral Aguardando when pending.",
+      "html": "<button class=\"ds-btn-download\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/></svg>Baixar</button> <button class=\"ds-btn-download ds-btn-download--off\" disabled><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/></svg>Aguardando</button>",
+      "css": ".ds-btn-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border: none; border-radius: 9999px; background: #CC4520; color: #FFFFFF; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform 200ms cubic-bezier(0.34,1.4,0.64,1), background-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-download:hover { background: #B33C1B; } .ds-btn-download:active { transform: scale(0.97); } .ds-btn-download:focus-visible { outline: none; box-shadow: 0 0 0 2px #F6F1EA, 0 0 0 4px #CC4520; } .ds-btn-download--off, .ds-btn-download--off:hover { background: transparent; color: #6B6158; font-weight: 600; border: 1px dashed #E4DACD; cursor: not-allowed; transform: none; }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Pill search field; focus turns the border orange with a blush halo.",
+      "html": "<label class=\"ds-search\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input class=\"ds-input\" type=\"search\" placeholder=\"Procurar pelo nome do arquivo\" aria-label=\"Buscar relatórios\"></label>",
+      "css": ".ds-search { position: relative; display: block; max-width: 448px; color: #6B6158; } .ds-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); pointer-events: none; } .ds-input { width: 100%; height: 48px; padding: 0 48px 0 44px; border: 1px solid #E4DACD; border-radius: 9999px; background: #FFFFFF; color: #2A2622; caret-color: #CC4520; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; font-size: 15px; transition: border-color 200ms, box-shadow 200ms; } .ds-input::placeholder { color: #6B6158; } .ds-input:hover { border-color: #6B6158; } .ds-input:focus { outline: none; border-color: #CC4520; box-shadow: 0 0 0 4px #FBE5DB; }"
+    },
+    {
+      "name": "Type Filter Chips",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Pill chips; the selected one fills with ink, never orange.",
+      "html": "<div class=\"ds-chips\" role=\"group\" aria-label=\"Filtrar por tipo\"><button class=\"ds-chip\" aria-pressed=\"true\">Todos</button><button class=\"ds-chip\" aria-pressed=\"false\">PDF</button><button class=\"ds-chip\" aria-pressed=\"false\">XML</button><button class=\"ds-chip\" aria-pressed=\"false\">CSV</button><button class=\"ds-chip\" aria-pressed=\"false\">XLSX</button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; } .ds-chip { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 16px; border: 1px solid #E4DACD; border-radius: 9999px; background: #FFFFFF; color: #2A2622; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 200ms cubic-bezier(0.34,1.4,0.64,1), background-color 200ms cubic-bezier(0.16,1,0.3,1), border-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-chip:hover { border-color: #6B6158; } .ds-chip:active { transform: scale(0.97); } .ds-chip:focus-visible { outline: none; box-shadow: 0 0 0 2px #F6F1EA, 0 0 0 4px #CC4520; } .ds-chip[aria-pressed=\"true\"] { background: #2A2622; border-color: #2A2622; color: #FFFFFF; }"
+    },
+    {
+      "name": "Report Card",
+      "kind": "card",
+      "refersTo": "report-card",
+      "description": "One file per white 24px card: type tile and name, date and size, status dot and action.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-top\"><span class=\"ds-tile\">PDF</span><p class=\"ds-name\">Guia_DARF_Setembro.pdf</p></div><div class=\"ds-card-mid\"><div><span class=\"ds-lbl\">Enviado</span><span class=\"ds-val\">Há 2h</span></div><div class=\"ds-right\"><span class=\"ds-lbl\">Tamanho</span><span class=\"ds-val\">96.1 KB</span></div></div><div class=\"ds-card-foot\"><span class=\"ds-status\"><i></i>Disponível</span><button class=\"ds-dl\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\"/></svg>Baixar</button></div></article>",
+      "css": ".ds-card { max-width: 352px; padding: 20px; border-radius: 24px; background: #FFFFFF; color: #2A2622; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; box-shadow: 0 1px 2px rgba(42,38,34,0.04), 0 10px 24px -14px rgba(42,38,34,0.18); transition: box-shadow 300ms cubic-bezier(0.16,1,0.3,1); } .ds-card:hover { box-shadow: 0 2px 4px rgba(42,38,34,0.05), 0 18px 32px -16px rgba(42,38,34,0.24); } .ds-card-top { display: flex; align-items: flex-start; gap: 14px; } .ds-tile { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 48px; height: 48px; border-radius: 16px; background: #EFE7DC; font-size: 11px; font-weight: 800; letter-spacing: 0.025em; } .ds-name { margin: 0; padding-top: 2px; font-size: 15.5px; font-weight: 700; line-height: 1.375; overflow-wrap: anywhere; } .ds-card-mid { display: flex; justify-content: space-between; margin-top: 16px; } .ds-right { text-align: right; } .ds-lbl { display: block; font-size: 12px; color: #6B6158; } .ds-val { display: block; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; } .ds-card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #E4DACD; } .ds-status { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; } .ds-status i { width: 10px; height: 10px; border-radius: 9999px; background: #2F7D4F; } .ds-dl { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: none; border-radius: 9999px; background: #CC4520; color: #FFFFFF; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform 200ms cubic-bezier(0.34,1.4,0.64,1), background-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-dl:hover { background: #B33C1B; } .ds-dl:active { transform: scale(0.97); } .ds-dl:focus-visible { outline: none; box-shadow: 0 0 0 2px #F6F1EA, 0 0 0 4px #CC4520; }"
+    },
+    {
+      "name": "Status Dot",
+      "kind": "custom",
+      "refersTo": "colors.ok",
+      "description": "10px dot plus a pt-BR word; the only way report status is shown.",
+      "html": "<div class=\"ds-dots\"><span class=\"ds-dot\"><i class=\"ds-dot-ok\"></i>Disponível</span><span class=\"ds-dot\"><i class=\"ds-dot-warn\"></i>Pendente</span><span class=\"ds-dot\"><i class=\"ds-dot-danger\"></i>Erro</span><span class=\"ds-dot\"><i class=\"ds-dot-unknown\"></i>Desconhecido</span></div>",
+      "css": ".ds-dots { display: flex; gap: 20px; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; } .ds-dot { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #2A2622; } .ds-dot i { display: inline-block; width: 10px; height: 10px; border-radius: 9999px; box-sizing: border-box; } .ds-dot-ok { background: #2F7D4F; } .ds-dot-warn { background: #D69A00; } .ds-dot-danger { background: #B42318; } .ds-dot-unknown { border: 2px solid #6B6158; }"
+    },
+    {
+      "name": "Pagination",
+      "kind": "nav",
+      "refersTo": "page-pill-current",
+      "description": "Ghost prev/next around round page pills; the current page is an ink pill.",
+      "html": "<nav class=\"ds-pag\" aria-label=\"Paginação\"><span class=\"ds-pag-info\">Mostrando 1–12 de 30</span><div class=\"ds-pag-btns\"><button class=\"ds-pg\" disabled aria-label=\"Página anterior\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m15 18-6-6 6-6\"/></svg></button><button class=\"ds-pg\" aria-current=\"page\">1</button><button class=\"ds-pg\">2</button><button class=\"ds-pg\">3</button><button class=\"ds-pg\" aria-label=\"Próxima página\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"/></svg></button></div></nav>",
+      "css": ".ds-pag { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; } .ds-pag-info { font-size: 14px; font-weight: 600; color: #6B6158; font-variant-numeric: tabular-nums; } .ds-pag-btns { display: flex; gap: 6px; } .ds-pg { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: none; border-radius: 9999px; background: transparent; color: #2A2622; font: inherit; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; cursor: pointer; transition: transform 200ms cubic-bezier(0.34,1.4,0.64,1), background-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-pg:hover { background: #EFE7DC; } .ds-pg:active { transform: scale(0.97); } .ds-pg:focus-visible { outline: none; box-shadow: 0 0 0 2px #F6F1EA, 0 0 0 4px #CC4520; } .ds-pg[aria-current=\"page\"] { background: #2A2622; color: #FFFFFF; } .ds-pg:disabled { opacity: 0.4; cursor: not-allowed; }"
+    },
+    {
+      "name": "Upload Progress Ring",
+      "kind": "custom",
+      "refersTo": "colors.action",
+      "description": "Signature: real upload progress as an orange arc filling a beige track.",
+      "html": "<div class=\"ds-ring\" role=\"progressbar\" aria-label=\"Progresso do envio\" aria-valuenow=\"64\" aria-valuemin=\"0\" aria-valuemax=\"100\"><svg viewBox=\"0 0 112 112\" aria-hidden=\"true\"><circle cx=\"56\" cy=\"56\" r=\"46\" class=\"ds-ring-track\"/><circle cx=\"56\" cy=\"56\" r=\"46\" class=\"ds-ring-arc\" stroke-dasharray=\"289.03\" stroke-dashoffset=\"104.05\"/></svg><span>64<small>%</small></span></div>",
+      "css": ".ds-ring { position: relative; width: 112px; height: 112px; font-family: \"Nunito Sans\", system-ui, -apple-system, sans-serif; } .ds-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); } .ds-ring circle { fill: none; stroke-width: 10; } .ds-ring-track { stroke: #EFE7DC; } .ds-ring-arc { stroke: #CC4520; stroke-linecap: round; transition: stroke-dashoffset 500ms cubic-bezier(0.16,1,0.3,1); } .ds-ring span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: #2A2622; font-variant-numeric: tabular-nums; } .ds-ring small { font-size: 14px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Warm Desk",
+    "overview": "A calm consumer app laid on warm paper. The ground is a pale oatmeal, content sits on white cards with generous 24px corners and a soft lift, and every control is a pill. Nothing on screen is loud except the things you can press right now: the orange is a promise that tapping it does something immediately. State is told by small coloured dots and plain pt-BR words, never by colour floods.\n\nDensity is comfortable rather than tight: a card carries one file (type tile, name, sent date, size, status, action) and the grid steps 1, 2, 3 columns with width. The surface replaces an earlier dark indigo admin table; glass, glow, gradient text and dark mode are not part of this world. The page is light only (color-scheme: light).\n\nMotion is short and quiet: entrances fade or rise with an expo ease-out and never overshoot; only a button press gets a slight spring. Everything collapses to near-instant under reduced motion.",
+    "keyCharacteristics": [
+      "Warm neutral ground, white cards, beige tiles; ink is warm brown-black, never pure black.",
+      "One saturated hue (action orange), reserved for live actions, focus and upload progress.",
+      "Pill controls everywhere; 24px cards; 28px dialog/sheet.",
+      "Soft, diffuse, warm-tinted shadows that lift cards off the ground.",
+      "Nunito Sans throughout, bold-leaning, tabular numerals for every number.",
+      "Phones are first-class: the primary action docks to a bottom bar, the dialog becomes a bottom sheet."
+    ],
+    "rules": [
+      { "name": "The Press-Only Orange Rule", "body": "Orange appears only on things that act now, plus the focus and progress feedback of those actions. Selection state (active chip, current page) uses ink, never orange. If a control cannot act, it loses the orange entirely: disabled primary goes to tile fill with ink-soft text, an unavailable download becomes a dashed line outline.", "section": "colors" },
+      { "name": "The Dot, Not Badge Rule", "body": "Report status is a 10px dot plus a pt-BR word in ink. State colours fill dots and small icon tiles; they never tint a card, a row or a whole button.", "section": "colors" },
+      { "name": "The Tabular Number Rule", "body": "Every numeral that can change (dates, sizes, counts, page numbers, upload percent) is set with tabular figures so columns and counters do not jitter.", "section": "typography" },
+      { "name": "The Weight Ladder Rule", "body": "Buttons are 700; chips and meta are 600; nothing user-facing drops below 400 or rises above 800.", "section": "typography" },
+      { "name": "The Thumb Reach Rule", "body": "On phones the primary action lives at the bottom of the screen and spans the width; dialogs open as bottom sheets.", "section": "layout" },
+      { "name": "The Warm Shadow Rule", "body": "Shadows are always ink-tinted, soft and negatively spread. Hover deepens a card from Card to Lift; nothing else moves.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do reserve action orange for controls that act immediately, and for their focus and progress feedback.",
+      "Do strip the orange from any action that cannot run: tile fill for a disabled primary, a dashed line outline for an unavailable download.",
+      "Do mark selection (active chip, current page) with an ink fill and white text.",
+      "Do show state as a 10px dot plus a pt-BR word; keep state colours on dots and small icon tiles.",
+      "Do make every control a pill and every content container a white 24px card with the Card shadow.",
+      "Do set every changing number in tabular figures.",
+      "Do dock the primary action to a full-width bottom bar on phones and open dialogs as bottom sheets.",
+      "Do tint shadows with ink (rgba 42, 38, 34) and pair a contact shadow with a negatively spread ambient one.",
+      "Do keep entrances on the expo ease-out and give the spring only to button presses."
+    ],
+    "donts": [
+      "Don't use orange for selection, decoration, headings or status.",
+      "Don't reintroduce the old dark indigo look: no glass, glow, gradient text or dark surfaces.",
+      "Don't use pure black or neutral grey for text, scrims or shadows; use ink and ink-soft.",
+      "Don't set text in warn-dot; use warn for amber text.",
+      "Don't add a second typeface; hierarchy comes from Nunito Sans weights.",
+      "Don't let entrance animations overshoot."
+    ]
+  }
+}

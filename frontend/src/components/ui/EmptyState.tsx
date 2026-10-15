@@ -1,4 +1,4 @@
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, FileSearch, RefreshCw } from 'lucide-react';
 
 interface EmptyStateProps {
   title?: string;
@@ -16,24 +16,26 @@ export function EmptyState({
   onRetry,
   variant = 'empty',
 }: EmptyStateProps) {
-  return (
-    <div className="flex flex-col items-center justify-center py-16 px-6 animate-fade-in">
-      <div
-        className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-5 ${
-          variant === 'error'
-            ? 'bg-red-500/10 text-red-400'
-            : 'bg-brand-500/10 text-brand-400'
-        }`}
-      >
-        <AlertCircle size={28} />
-      </div>
+  const isError = variant === 'error';
+  const Icon = isError ? AlertCircle : FileSearch;
 
-      <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-      <p className="text-surface-400 text-sm text-center max-w-sm mb-6">{description}</p>
+  return (
+    <div className="flex flex-col items-center justify-center rounded-card bg-card px-6 py-14 text-center shadow-card animate-fade-in">
+      <span
+        className={`mb-5 flex h-16 w-16 items-center justify-center rounded-2xl ${
+          isError ? 'bg-danger-soft text-danger' : 'bg-tile text-ink'
+        }`}
+        aria-hidden="true"
+      >
+        <Icon size={28} />
+      </span>
+
+      <h2 className="mb-1.5 text-lg font-bold text-ink">{title}</h2>
+      <p className="mb-6 max-w-sm text-sm text-ink-soft">{description}</p>
 
       {onRetry && (
-        <button onClick={onRetry} className="btn-primary text-sm">
-          <RefreshCw size={16} />
+        <button type="button" onClick={onRetry} className={`${isError ? 'btn-primary' : 'btn-secondary'} text-sm`}>
+          <RefreshCw size={16} aria-hidden="true" />
           Tentar novamente
         </button>
       )}

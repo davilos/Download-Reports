@@ -46,19 +46,6 @@ export function formatRelativeDate(isoString: string): string {
 }
 
 /**
- * Get file type badge color classes based on file extension.
- */
-export function getFileTypeColor(type: string): string {
-  const colors: Record<string, string> = {
-    pdf: 'bg-red-500/15 text-red-400 border-red-500/20',
-    xml: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-    csv: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-    xlsx: 'bg-sky-500/15 text-sky-400 border-sky-500/20',
-  };
-  return colors[type] ?? 'bg-surface-500/15 text-surface-400 border-surface-500/20';
-}
-
-/**
  * Get status badge styling.
  */
 export function getStatusConfig(status: string): { label: string; classes: string } {
@@ -77,11 +64,4 @@ export function getStatusConfig(status: string): { label: string; classes: strin
     },
   };
   return config[status] ?? { label: status, classes: 'bg-surface-500/15 text-surface-400' };
-}
-
-/**
- * Returns a CSS class for staggered animation delay.
- */
-export function getStaggerDelay(index: number): string {
-  return `${index * 50}ms`;
 }

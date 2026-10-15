@@ -72,6 +72,7 @@ frontend/vite.config.ts           no /api proxy: the dev SPA (:5173) can't reach
 .claude/                          hooks (guard, post-edit), /check, api-contract-reviewer, skills, rules
                                   (skills and rules mirrored in .cursor/ and .windsurf/)
 docs/                             full-detail references behind this file
+PRODUCT.md, DESIGN.md, .impeccable/  design context: product truth, visual system + design.json, surface briefs
 ```
 
 Business rules live in services (backend) and hooks (frontend), never in controllers, `api/` or components.
