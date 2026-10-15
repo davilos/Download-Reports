@@ -1,8 +1,23 @@
 # AGENTS.md
 
 Rules for AI coding agents in this repo. Package rules: [backend/AGENTS.md](backend/AGENTS.md),
-[frontend/AGENTS.md](frontend/AGENTS.md). This file is the summary; each section links to its full-detail file in
-[`docs/`](docs/) — read it before working on that area.
+[frontend/AGENTS.md](frontend/AGENTS.md). This file is the summary; full detail lives in [`docs/`](docs/).
+
+## Read before you change
+
+| Change | Read |
+| ------ | ---- |
+| New entity / field / migration | [Domain › Entities](docs/DOMAIN-GUIDELINES.md#entities), [Naming › Database](docs/NAMING-CONVENTIONS.md#database-prisma) |
+| New business rule / status / limit | [Domain › Business rules](docs/DOMAIN-GUIDELINES.md#business-rules), [Architecture › Key decisions](docs/ARCHITECTURE-GUIDELINES.md#key-decisions) |
+| New route / controller / DTO / error code | [Architecture › API ↔ UI contract](docs/ARCHITECTURE-GUIDELINES.md#api--ui-contract), [Naming › HTTP API](docs/NAMING-CONVENTIONS.md#http-api) |
+| New module / service | [Architecture › Codebase map](docs/ARCHITECTURE-GUIDELINES.md#codebase-map), [Naming › Backend](docs/NAMING-CONVENTIONS.md#backend-nestjs) |
+| New S3 / database / auth / env var use | [Architecture › Backend: infrastructure](docs/ARCHITECTURE-GUIDELINES.md#backend-infrastructure) |
+| New page / component / hook | [Architecture › Frontend](docs/ARCHITECTURE-GUIDELINES.md#frontend-frontendsrc), [Naming › Frontend](docs/NAMING-CONVENTIONS.md#frontend-react) |
+| New frontend API call / type | [Architecture › API ↔ UI contract](docs/ARCHITECTURE-GUIDELINES.md#api--ui-contract) |
+| New test | [Code generation › Tests first](docs/CODE-GENERATION-GUIDELINES.md#tests-first), [Naming › Tests](docs/NAMING-CONVENTIONS.md#tests) |
+| New command / CI step / hook / skill | [Architecture › Tooling](docs/ARCHITECTURE-GUIDELINES.md#tooling-ci-agent-harness-and-docs) |
+| A "Not built" feature | [Domain › Not in the domain yet](docs/DOMAIN-GUIDELINES.md#not-in-the-domain-yet) — ask the user first |
+| Any change, before committing | [Code generation › Keep the docs current](docs/CODE-GENERATION-GUIDELINES.md#keep-the-docs-current) |
 
 ## Overview
 
@@ -20,8 +35,6 @@ TypeScript 6, Tailwind 3, Radix UI, axios, Vitest, oxlint. No root workspace: ru
 relevant spec before changing behaviour it covers.
 
 ## Domain
-
-Full detail: [docs/DOMAIN-GUIDELINES.md](docs/DOMAIN-GUIDELINES.md).
 
 - **Report** — one uploaded file plus metadata: `id` (UUID, used in routes and the S3 key), `fileName`, `fileSize`
   (bytes declared by the client), `contentType`, `type` (derived from the MIME type), `status`, `s3Key`
@@ -46,8 +59,6 @@ Not built — don't add as a side effect, raise it: per-user ownership (every us
 issuing, a delete endpoint, S3 cleanup of expired rows, server-side check that the upload exists.
 
 ## Codebase map
-
-Full detail, key decisions and build commands: [docs/ARCHITECTURE-GUIDELINES.md](docs/ARCHITECTURE-GUIDELINES.md).
 
 ```
 backend/prisma/schema.prisma      data model (no migrations committed yet)
@@ -79,8 +90,6 @@ Business rules live in services (backend) and hooks (frontend), never in control
 
 ## Naming
 
-Full detail and examples: [docs/NAMING-CONVENTIONS.md](docs/NAMING-CONVENTIONS.md).
-
 - **Backend:** files `kebab-case.<role>.ts` (`upload-intent.dto.ts`); classes PascalCase + role (`ReportsService`,
   `UploadIntentDto`); methods verb + noun (`createUploadIntent`); constants, error codes, env vars UPPER_SNAKE
   (durations end in `_SECONDS`).
@@ -98,8 +107,6 @@ Full detail and examples: [docs/NAMING-CONVENTIONS.md](docs/NAMING-CONVENTIONS.m
   Portuguese log messages in `CleanupService`.
 
 ## Code generation rules
-
-Full detail: [docs/CODE-GENERATION-GUIDELINES.md](docs/CODE-GENERATION-GUIDELINES.md).
 
 - **No `any`** anywhere, tests included: use `unknown` + narrowing, `jest.Mocked` / `vi.mocked`. Tooling doesn't
   enforce it (no `strict`, backend `no-explicit-any` off), so type exported signatures explicitly. No `as`, `!` or
