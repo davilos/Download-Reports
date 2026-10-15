@@ -98,6 +98,20 @@
       ],
       "method": "copy",
       "global": false
+    },
+    "gh-address-comments": {
+      "name": "gh-address-comments",
+      "source": "local",
+      "contentHash": "a1808fb136b7118a7bdac65415e9a40a7982953f8b3339c97087fc0807865d88",
+      "installedAt": "2026-10-15T11:45:24.942Z",
+      "updatedAt": "2026-10-15T11:45:24.963Z",
+      "agents": [
+        "cursor",
+        "claude-code",
+        "windsurf"
+      ],
+      "method": "copy",
+      "global": false
     }
   }
 }
