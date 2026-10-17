@@ -94,6 +94,7 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval, gh-address-comments), mirrored per tool. |
 | `.agents/skills/impeccable/`, `.claude/skills/impeccable/`, `.cursor/skills/impeccable/`, `.github/skills/impeccable/` | `impeccable` frontend design skill for Codex, Claude Code, Cursor and Copilot. Its `scripts/impeccable` launcher downloads and checksum-verifies the engine binary on first use; `scripts/bin/` is gitignored. |
 | `.claude/agents/impeccable-*.md`, `.cursor/agents/`, `.github/agents/`, `.agents/skills/impeccable/agents/` | The impeccable subagents: asset producer, documenter, finish reviewer, manual-edit applier. |
+| `.codex/hooks.json`, `.cursor/hooks.json`, `.github/hooks/impeccable.json` | Run the impeccable design detector around file edits when the skill's launcher exists; Codex also runs a deep pass on stop. |
 | `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
 | `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
 | `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |

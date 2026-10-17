@@ -73,6 +73,7 @@ frontend/vite.config.ts           no /api proxy: the dev SPA (:5173) can't reach
                                   (skills and rules mirrored in .cursor/ and .windsurf/)
 .agents/ · .github/{skills,agents}/  impeccable design skill and subagents for Codex and Copilot
                                   (also in .claude/ and .cursor/)
+.codex/ · .cursor/hooks.json · .github/hooks/  hooks that run the impeccable detector on edits
 docs/                             full-detail references behind this file
 ```
 
