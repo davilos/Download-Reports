@@ -98,6 +98,8 @@ the chosen profile on the `Profile:` line of `checks.md`; the Verifier and `vali
 ## Safety
 
 - Never read, print or commit `.env*` files or credentials; document new env vars in the package README.
-- Don't hand-edit `package-lock.json`; never edit an applied migration — create a new one.
-- Destructive commands and `.env` access are blocked by `.claude/hooks/pre-tool-use.mjs`; ask the user instead of
+- Don't hand-edit `package-lock.json`; never write or edit files under `prisma/migrations/` — generate migrations
+  with `npx prisma migrate dev`.
+- Destructive commands, `.env` access and writes to `prisma/migrations/` are blocked by
+  `.claude/hooks/pre-tool-use.mjs` (tests: `node --test ".claude/hooks/*.test.mjs"`); ask the user instead of
   working around it.

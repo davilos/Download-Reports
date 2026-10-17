@@ -11,7 +11,9 @@ NestJS 11 API. Applies to everything under `backend/`. Root rules in [../AGENTS.
 
 ## Rules
 
-- Run `npx prisma generate` after any change to `schema.prisma`; add a migration, never edit an applied one.
+- After any change to `schema.prisma`, generate the migration with `npx prisma migrate dev --name <kebab-description>`
+  (needs a database; ask the user to run it if none is available), then run `npx prisma generate`. Never write or
+  edit files under `prisma/migrations/`; the pre-tool-use hook blocks it.
 - Validate every request body/query with a `class-validator` DTO in `dto/`. The global `ValidationPipe` uses
   `whitelist: true, transform: true`, so undeclared fields are silently dropped.
 - Read config through `ConfigService.get(...)`, never `process.env` inside services. Current keys:
