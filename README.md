@@ -7,6 +7,7 @@ short-lived URLs; the browser transfers the bytes straight to and from S3.
 | ------- | ----- | ---- |
 | [`backend/`](backend/) | NestJS 11 · Prisma 5 + PostgreSQL · AWS S3 · JWT | [backend/AGENTS.md](backend/AGENTS.md) |
 | [`frontend/`](frontend/) | React 19 · Vite · Tailwind · Radix UI | [frontend/AGENTS.md](frontend/AGENTS.md) |
+| [`packages/contracts/`](packages/contracts/) | Types-only HTTP contract, linked into both apps with `file:` | [Architecture › API ↔ UI contract](docs/ARCHITECTURE-GUIDELINES.md#api--ui-contract) |
 
 ## Getting started
 

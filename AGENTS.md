@@ -29,7 +29,8 @@ Flow: `POST /api/reports/upload-intent` → browser `PUT` to S3 → `PATCH /api/
 `GET /api/reports` → `GET /api/reports/:id/download-link`.
 
 Stack: `backend/` NestJS 11, Prisma 5 + PostgreSQL, AWS SDK v3, passport-jwt, Jest · `frontend/` React 19, Vite 8,
-TypeScript 6, Tailwind 3, Radix UI, axios, Vitest, oxlint. No root workspace: run commands inside each package.
+TypeScript 6, Tailwind 3, Radix UI, axios, Vitest, oxlint · `packages/contracts/` types-only HTTP contract, a
+`file:` devDependency of both apps. No root workspace: run commands inside each package.
 `/check` runs the gate; a change is done only when it passes for every package touched. Known failure:
 `backend/test/app.e2e-spec.ts` needs a real database. Decisions and specs: `.specs/` (local, gitignored) — read the
 relevant spec before changing behaviour it covers.
@@ -76,7 +77,9 @@ frontend/src/pages/               ReportsPage, the only page (no router)
 frontend/src/components/          reports/ (feature) · ui/ (primitives) · layout/ (Header)
 frontend/src/hooks/               client logic: useUpload, useDownload, useReports
 frontend/src/api/                 one function per endpoint; client.ts = axios '/api' + JWT from localStorage.token
-frontend/src/types/report.ts      API contract mirror
+frontend/src/types/report.ts      re-exports the contract's Report types for the UI
+packages/contracts/               HTTP contract (request/response shapes, error codes), types only, no build;
+                                  backend services/DTOs and frontend api/ + types/ import it
 frontend/src/utils/format.ts      display formatting
 frontend/vite.config.ts           no /api proxy: the dev SPA (:5173) can't reach the API (:3000) without one
 .github/workflows/ci.yml          CI gate · .husky/ + lint-staged.config.mjs: pre-commit format and lint

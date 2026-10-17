@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsInt, Min, Max, IsIn } from 'class-validator';
+import type { UploadIntentRequest } from '@download-reports/contracts';
 
 export const ALLOWED_CONTENT_TYPES = [
   'application/pdf',
@@ -7,7 +8,7 @@ export const ALLOWED_CONTENT_TYPES = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ] as const;
 
-export class UploadIntentDto {
+export class UploadIntentDto implements UploadIntentRequest {
   @IsString()
   @IsNotEmpty()
   fileName: string;

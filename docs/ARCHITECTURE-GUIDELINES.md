@@ -68,10 +68,17 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `components/ui/`, `components/layout/` | Presentational primitives (`StatusDot`, `EmptyState`, `TableSkeleton`) and `Header` (title, subtitle and an `action` slot). |
 | `hooks/` | Client-side application logic: `useUpload` (validation, PUT with progress, auto-retry, `ttl-expired`), `useDownload` (link on click, `<a download>`), `useReports` (filters, pagination, refetch). |
 | `api/` | HTTP adapters, one function per endpoint. `client.ts`: axios with `baseURL: '/api'`, 30 s timeout, JWT from `localStorage.token`. `upload.ts` uses raw axios for the S3 PUT. |
-| `types/report.ts` | Frontend mirror of the API contract (see below). |
+| `types/report.ts` | Re-exports the `Report` types of `@download-reports/contracts` for the UI (see below). |
 | `utils/format.ts` | Display formatting: file size, dates (absolute/relative), status labels. |
 | `index.css`, `../tailwind.config.js`, `../postcss.config.js` | Styling and design tokens (`ground`, `card`, `tile`, `line`, `ink`, `action`, `ok`, `warn`, `danger`); the visual system they implement is recorded in the root `DESIGN.md`. |
 | `../vite.config.ts` | Build and dev server. There is **no `/api` proxy**, so in dev the SPA (`:5173`) cannot reach the API (`:3000`) without one. |
+
+### Shared contract (`packages/contracts/`)
+
+| Path | Responsibility |
+| ---- | -------------- |
+| `src/index.ts` | `@download-reports/contracts`: the JSON shapes of the `/api/reports` routes (`Report`, `ReportsFilters`, `ReportsResponse`, `UploadIntentRequest`/`Response`, `DownloadLinkResponse`) and `ReportErrorCode` / `ReportErrorBody`. Types only (see below). |
+| `package.json` | Points `types` and `exports["."].types` at `src/index.ts`; no build, no dependencies. Linked into both apps as a `file:../packages/contracts` **devDependency**, so `npm ci` in each package creates the symlink and a production install (`--omit=dev`) does not need the folder. |
 
 ### Tests
 
@@ -117,18 +124,35 @@ npm run lint                                       # oxlint
 npm run build                                      # tsc -b && vite build
 ```
 
+`packages/contracts/` has no commands of its own: each app's `npm ci` links it and each app's typecheck
+(`tsc --noEmit`, `tsc -b`) compiles it, so a change there must pass the gate of **both** packages.
+
 `/check` runs the full gate. A change is not done until the gate passes for every package touched. Known baseline
 failure (do not "fix" it as a side effect of unrelated work): `backend/test/app.e2e-spec.ts` needs a real
 `DATABASE_URL`.
 
 ## API ↔ UI contract
 
-The frontend `Report` (`frontend/src/types/report.ts`) mirrors the JSON of `GET /api/reports`, which is the Prisma
-row as stored: same field names (`createdAt`, `fileSize`) and UPPERCASE `ReportStatus`. The backend does not
-translate names for the UI. Two tests pin the names on each side: the `GET /api/reports` case in
-`backend/test/reports.e2e-spec.ts` asserts the serialized `createdAt`, `fileSize` and status values, and
-`frontend/src/types/report.test.ts` asserts the exact `Report` and `ReportStatus` types, which `tsc -b` compiles.
-`StatusDot` renders `Desconhecido` for a status outside the union. Any change touching either side must keep them
-consistent or say explicitly that it does not; the `api-contract-reviewer` subagent checks this.
+`packages/contracts/src/index.ts` is the single definition of the `/api/reports` JSON. Change a shape there, then
+make both apps compile; never redeclare a contract type inside `backend/` or `frontend/`.
 
-Error responses: `throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`. The frontend matches on `error`.
+- **Types only.** Both apps erase `import type` at compile time, so nothing from the package reaches `dist/` or the
+  bundle. A runtime value (a `const`, an `enum`) would need a build step and a CJS (backend, `nodenext`) / ESM
+  (frontend, `bundler`) split: don't add one without deciding that first.
+- **Who imports it.** Backend: `UploadIntentDto implements UploadIntentRequest`, `ReportsFiltersDto implements
+  ReportsFilters`, `ReportsService` return types for upload intent and download link, and every thrown body is
+  `{ error: '…' } satisfies ReportErrorBody`, so an unknown code fails `tsc`. Frontend: `src/api/*` request and
+  response generics, and `src/types/report.ts` re-exports `Report`, `ReportStatus`, `ReportType`,
+  `ReportsFilters` and `ReportsResponse` for components and hooks.
+- **Not compiler-checked yet.** `findAll` and `confirmUpload` still return Prisma rows (`createdAt: Date`, plus
+  `s3Key`, `contentType`, `updatedAt`, `deletedAt`), which the contract `Report` (`createdAt: string`, six fields)
+  cannot type without an explicit mapping. Until that mapping exists, two tests pin the list names: the
+  `GET /api/reports` case in `backend/test/reports.e2e-spec.ts` asserts the serialized `createdAt`, `fileSize` and
+  status values, and `frontend/src/types/report.test.ts` asserts the exact `Report` and `ReportStatus` types.
+
+`StatusDot` renders `Desconhecido` for a status outside the union. The `api-contract-reviewer` subagent checks the
+contract against the routes, DTOs and thrown codes.
+
+Error responses: `throw new XxxException({ error: 'UPPER_SNAKE_CODE' } satisfies ReportErrorBody)`; a new code is
+added to `ReportErrorCode` first. The frontend does not read `error` yet: `useUpload` and `useDownload` branch only
+on an S3 `403`; when it starts matching codes, type the check with `ReportErrorCode`.

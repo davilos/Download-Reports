@@ -9,6 +9,12 @@ import { StorageService } from '../storage/storage.service';
 import { UploadIntentDto } from './dto/upload-intent.dto';
 import { ReportsFiltersDto } from './dto/reports-filters.dto';
 import { ReportStatus } from '@prisma/client';
+import type {
+  DownloadLinkResponse,
+  ReportErrorBody,
+  ReportType,
+  UploadIntentResponse,
+} from '@download-reports/contracts';
 
 @Injectable()
 export class ReportsService {
@@ -22,7 +28,7 @@ export class ReportsService {
   async createUploadIntent(
     dto: UploadIntentDto,
     _userId: string,
-  ): Promise<{ uploadUrl: string; reportId: string }> {
+  ): Promise<UploadIntentResponse> {
     const reportType = this.getReportType(dto.contentType);
     const report = await this.prisma.report.create({
       data: {
@@ -56,7 +62,9 @@ export class ReportsService {
     });
 
     if (!report) {
-      throw new NotFoundException({ error: 'REPORT_NOT_FOUND_OR_EXPIRED' });
+      throw new NotFoundException({
+        error: 'REPORT_NOT_FOUND_OR_EXPIRED',
+      } satisfies ReportErrorBody);
     }
 
     // SPEC_DEVIATION: spec.md's concurrent-confirm edge case describes idempotent
@@ -69,7 +77,7 @@ export class ReportsService {
     if (report.status !== ReportStatus.PENDING) {
       throw new UnprocessableEntityException({
         error: 'INVALID_STATUS_TRANSITION',
-      });
+      } satisfies ReportErrorBody);
     }
 
     return this.prisma.report.update({
@@ -78,17 +86,21 @@ export class ReportsService {
     });
   }
 
-  async getDownloadLink(reportId: string): Promise<{ downloadUrl: string }> {
+  async getDownloadLink(reportId: string): Promise<DownloadLinkResponse> {
     const report = await this.prisma.report.findFirst({
       where: { id: reportId, deletedAt: null },
     });
 
     if (!report) {
-      throw new NotFoundException({ error: 'REPORT_NOT_FOUND' });
+      throw new NotFoundException({
+        error: 'REPORT_NOT_FOUND',
+      } satisfies ReportErrorBody);
     }
 
     if (report.status !== ReportStatus.AVAILABLE) {
-      throw new UnprocessableEntityException({ error: 'REPORT_NOT_AVAILABLE' });
+      throw new UnprocessableEntityException({
+        error: 'REPORT_NOT_AVAILABLE',
+      } satisfies ReportErrorBody);
     }
 
     const downloadUrl = await this.storage.createGetPresignedUrl(report.s3Key);
@@ -125,8 +137,8 @@ export class ReportsService {
     return { data, total, page, pageSize };
   }
 
-  private getReportType(contentType: string): 'pdf' | 'xml' | 'csv' | 'xlsx' {
-    const map: Record<string, 'pdf' | 'xml' | 'csv' | 'xlsx'> = {
+  private getReportType(contentType: string): ReportType {
+    const map: Record<string, ReportType> = {
       'application/pdf': 'pdf',
       'application/xml': 'xml',
       'text/csv': 'csv',

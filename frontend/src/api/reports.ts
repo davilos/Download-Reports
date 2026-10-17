@@ -1,3 +1,4 @@
+import type { DownloadLinkResponse } from '@download-reports/contracts';
 import apiClient from './client';
 import type { ReportsResponse, ReportsFilters } from '../types';
 
@@ -16,7 +17,7 @@ export async function fetchReports(
  */
 export async function getDownloadLink(
   reportId: string,
-): Promise<{ downloadUrl: string }> {
-  const { data } = await apiClient.get<{ downloadUrl: string }>(`/reports/${reportId}/download-link`);
+): Promise<DownloadLinkResponse> {
+  const { data } = await apiClient.get<DownloadLinkResponse>(`/reports/${reportId}/download-link`);
   return data;
 }

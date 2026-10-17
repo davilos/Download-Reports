@@ -1,0 +1,12 @@
+{
+  "name": "@download-reports/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Types-only HTTP contract shared by backend/ and frontend/. No runtime code, so it has no build step.",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts"
+    }
+  }
+}
