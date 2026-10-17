@@ -1,6 +1,7 @@
 # Business domain
 
-Full reference for the domain summarized in [AGENTS.md](../AGENTS.md#domain).
+Full reference for the domain: entities are summarized in [AGENTS.md](../AGENTS.md#domain), business rules in
+`.claude/rules/domain-rules.md`.
 
 **Central de Relatórios** is a self-service file hub: authenticated users upload report files (the UI frames them
 as *documentos fiscais*) and later search, filter and download them. The system **stores** files; it never

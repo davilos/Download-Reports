@@ -1,6 +1,7 @@
 # Naming conventions
 
-Full reference for the naming rules summarized in [AGENTS.md](../AGENTS.md#naming).
+Full reference for the naming rules summarized in `.claude/rules/naming-conventions.md` (git naming in
+`.claude/rules/code-generation-rules.md`).
 
 Derived from the existing code; follow them for new code. Known deviations are listed at the end — do not copy
 them, and do not rename them as a side effect of unrelated work.

@@ -1,6 +1,6 @@
 # Code generation rules
 
-Full reference for the rules summarized in [AGENTS.md](../AGENTS.md#code-generation-rules). They apply to any code
+Full reference for the rules summarized in `.claude/rules/code-generation-rules.md`. They apply to any code
 an agent writes or changes. Package-specific rules in [backend/AGENTS.md](../backend/AGENTS.md) and
 [frontend/AGENTS.md](../frontend/AGENTS.md) still apply.
 
@@ -52,22 +52,25 @@ an agent writes or changes. Package-specific rules in [backend/AGENTS.md](../bac
 
 ## Keep the docs current
 
-**Always update the docs when you make a change**, in the same commit as the code: the summary in `AGENTS.md`
-**and** the matching file in `docs/`. A change whose docs are stale is not done.
+**Always update the docs when you make a change**, in the same commit as the code: the matching rule in
+`.claude/rules/` (plus its `.cursor/` and `.windsurf/` mirrors), the matching file in `docs/`, and `AGENTS.md` when
+the overview, stack, entities or structure change. A change whose docs are stale is not done.
 
 | You changed… | Update |
 | ------------ | ------ |
-| A behaviour, limit, TTL or status transition | Business rules in `AGENTS.md` and `docs/DOMAIN-GUIDELINES.md`; key decisions in `docs/ARCHITECTURE-GUIDELINES.md` if listed |
-| The Prisma schema or an enum | Domain in `AGENTS.md`, entities in `docs/DOMAIN-GUIDELINES.md`; `docs/NAMING-CONVENTIONS.md` if it adds a pattern |
-| A route, request/response field or error code | Flow and business rules in `AGENTS.md`, API ↔ UI contract in `docs/ARCHITECTURE-GUIDELINES.md` |
+| A behaviour, limit, TTL or status transition | `domain-rules` and `docs/DOMAIN-GUIDELINES.md`; key decisions in `docs/ARCHITECTURE-GUIDELINES.md` if listed |
+| The Prisma schema or an enum | Domain in `AGENTS.md`, entities in `docs/DOMAIN-GUIDELINES.md`; `naming-conventions` and `docs/NAMING-CONVENTIONS.md` if it adds a pattern |
+| A route, request/response field or error code | Flow in `AGENTS.md`, `domain-rules` if a business rule changes, API ↔ UI contract in `docs/ARCHITECTURE-GUIDELINES.md` |
 | A file, module, folder or layer (added, moved, removed) | Codebase map in `AGENTS.md` and `docs/ARCHITECTURE-GUIDELINES.md` |
 | A command, script, tool, hook or CI step | Build & test commands and the tooling table in `docs/ARCHITECTURE-GUIDELINES.md` |
 | An env var or config key | `docs/ARCHITECTURE-GUIDELINES.md`, the package `AGENTS.md` config list, and the README |
-| A naming pattern | Naming in `AGENTS.md` and `docs/NAMING-CONVENTIONS.md` |
+| A naming pattern | `naming-conventions` (git: `code-generation-rules`) and `docs/NAMING-CONVENTIONS.md` |
+| A heading in `docs/` (added, renamed, removed) | The task → section lists in the rules and the "Read before you change" table in `AGENTS.md` |
 | Something listed as missing, a deviation, a gap or a known issue (e.g. you fixed it) | Remove or reword that entry everywhere it appears |
 | Something only one package cares about | That package's `AGENTS.md` (`backend/` or `frontend/`) |
 
 - Document what the code **does**, not what it should do. Check every path, name and value you write.
 - Edit the existing entry instead of appending a near-duplicate; delete entries that are no longer true.
-- `AGENTS.md` stays a short summary (about two pages); full detail belongs in `docs/`.
+- `AGENTS.md` stays a project summary (overview, stack, entities, structure, references); rules belong in
+  `.claude/rules/` and full detail in `docs/`.
 - If a change needs no doc update, say so explicitly in the commit body or PR description.

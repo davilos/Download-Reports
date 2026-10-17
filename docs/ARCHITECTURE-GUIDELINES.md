@@ -52,7 +52,7 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 
 | Path | Responsibility |
 | ---- | -------------- |
-| `backend/prisma/schema.prisma` | Data model and indexes (PostgreSQL). Migrations go in `backend/prisma/migrations/` (none committed yet). |
+| `backend/prisma/schema.prisma` | Data model and indexes (PostgreSQL). Migrations go in `backend/prisma/migrations/` (none committed yet), generated only by `npx prisma migrate dev`. |
 | `backend/src/prisma/` | `PrismaService` (connect/disconnect lifecycle) in a `@Global()` module. The only database access point. |
 | `backend/src/storage/` | `StorageService` in a `@Global()` module: S3 client, key format, presigned PUT/GET, TTLs. The only S3 access point. |
 | `backend/src/auth/` | `JwtStrategy` (Bearer token, `sub` → `req.user.userId`), `JwtAuthGuard`, `AuthModule`. Verifies tokens only; nothing issues them. `JWT_SECRET` falls back to `'default-secret'` when unset. |
@@ -89,12 +89,14 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.github/workflows/ci.yml` | CI per package: typecheck, lint, unit + e2e tests, build (Node 22). |
 | `package.json`, `.husky/pre-commit`, `lint-staged.config.mjs` | Root git hooks only: Prettier on staged backend files, oxlint on staged frontend files. |
 | `backend/eslint.config.mjs`, `backend/.prettierrc`, `frontend/.oxlintrc.json` | Lint and format rules. |
-| `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. |
+| `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands, `.env` access and any agent write under `prisma/migrations/` (tests in `pre-tool-use.test.mjs`, run with `node --test ".claude/hooks/*.test.mjs"`); `post-edit.mjs` formats/lints edited files. `settings.json` also enables the `context7` MCP server and allows its tools. |
+| `.mcp.json`, `.cursor/mcp.json` | Project MCP servers for Claude Code and Cursor: `context7` (remote, no API key) serves current library docs. Windsurf has no project-level MCP config; setup in the README. |
 | `.claude/commands/check.md`, `.claude/agents/api-contract-reviewer.md` | The `/check` gate and the contract-review subagent. |
 | `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval), mirrored per tool. |
-| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
-| `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
-| `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |
+| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | The rules agents follow, each with a task → section list that says which part of its `docs/` guideline to read: `core-architecture-principles`, `code-generation-rules` and `library-docs-rules` (when and how to query Context7) always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
+| `AGENTS.md` | Project summary (overview, stack, entities, codebase map, rule index); the root `CLAUDE.md` imports it. |
+| `backend/AGENTS.md`, `frontend/AGENTS.md` | Package notes; each package's `CLAUDE.md` imports its file. |
+| `docs/` | Full-detail references behind `AGENTS.md` and the rules: domain, architecture, naming, code generation. |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design context for the `impeccable` skill: product truth, the visual system (tokens, components, rules) with its machine-readable sidecar `.impeccable/design.json`, and surface briefs holding each surface's direction contract. `.impeccable/mocks/` (decision sketches), `.impeccable/review/` (screenshots) and `.impeccable/questions/` (decision-page logs) are local working files and gitignored. |
 
 ## Build & test commands

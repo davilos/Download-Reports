@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // PreToolUse gate: denies or escalates destructive shell commands and edits to protected files.
 // Reads the hook payload from stdin and answers with a permissionDecision (see Claude Code hooks docs).
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const payload = JSON.parse(readFileSync(0, 'utf8') || '{}');
@@ -71,9 +71,25 @@ function mentionsSecretEnv(cmd) {
   return false;
 }
 
+// Prisma writes migrations itself (`prisma migrate dev`); a hand-written one drifts from the schema, and an applied
+// one must never change. So the agent may not create, edit or copy anything into prisma/migrations/.
+const MIGRATION_REASON =
+  'Blocked by .claude/hooks/pre-tool-use.mjs: Prisma migrations are generated, never hand-written, and applied ones '
+  + 'are immutable. Edit backend/prisma/schema.prisma, run `npx prisma migrate dev --name <kebab-description>` inside '
+  + 'backend/ (it needs a database: ask the user to run it if none is available), then `npx prisma generate`.';
+const MIGRATIONS_PATH = String.raw`['"]?[^\s'";|&<>]*prisma[\\/]+migrations(?:[\\/][^\s'";|&<>]*)?['"]?`;
+const MIGRATION_WRITES = [
+  new RegExp(String.raw`>>?\s*` + MIGRATIONS_PATH),
+  new RegExp(String.raw`\btee\b[^|;&\n]*\s` + MIGRATIONS_PATH),
+  new RegExp(String.raw`\b(touch|mkdir)\b[^|;&\n]*\s` + MIGRATIONS_PATH),
+  // cp/mv/install/ln only write to their last argument, so copying a migration out stays allowed.
+  new RegExp(String.raw`\b(cp|mv|install|ln)\b[^|;&\n]*\s` + MIGRATIONS_PATH + String.raw`\s*(?:$|[|;&\n])`),
+];
+
 if (tool === 'Bash') {
   const cmd = executableText(String(input.command ?? ''));
   if (mentionsSecretEnv(cmd)) decide('deny', ENV_SECRET_REASON);
+  if (MIGRATION_WRITES.some((re) => re.test(cmd))) decide('deny', MIGRATION_REASON);
   for (const [re, why] of DENY_COMMANDS) if (re.test(cmd)) decide('deny', `Blocked by .claude/hooks/pre-tool-use.mjs: ${why} Ask the user to run it themselves if it is really needed.`);
   for (const [re, why] of ASK_COMMANDS) if (re.test(cmd)) decide('ask', why);
   process.exit(0);
@@ -97,9 +113,7 @@ if (filePath) {
     decide('deny', 'Do not hand-edit package-lock.json; run npm install in the package instead.');
   }
   if (rel.startsWith('.git/')) decide('deny', 'Direct edits inside .git/ are blocked.');
-  if (/(^|\/)prisma\/migrations\/.+/.test(rel) && existsSync(path.resolve(projectDir, rel))) {
-    decide('deny', 'Applied Prisma migrations are immutable; create a new migration with prisma migrate dev.');
-  }
+  if (/(^|\/)prisma\/migrations(\/|$)/.test(rel)) decide('deny', MIGRATION_REASON);
 }
 
 process.exit(0);
