@@ -71,6 +71,8 @@ frontend/vite.config.ts           no /api proxy: the dev SPA (:5173) can't reach
 .github/workflows/ci.yml          CI gate · .husky/ + lint-staged.config.mjs: pre-commit format and lint
 .claude/                          hooks (guard, post-edit), /check, api-contract-reviewer, skills, rules
                                   (skills and rules mirrored in .cursor/ and .windsurf/)
+.agents/ · .github/{skills,agents}/  impeccable design skill and subagents for Codex and Copilot
+                                  (also in .claude/ and .cursor/)
 docs/                             full-detail references behind this file
 ```
 

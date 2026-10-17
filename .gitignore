@@ -55,6 +55,8 @@ pids
 .design/
 .harness-eval/
 .agents/.skill-lock.json.backup
+# impeccable engine binaries (~19 MB each): the scripts/impeccable launcher downloads and verifies them on first use
+**/skills/impeccable/scripts/bin/
 
 # Local one-off scripts
 backend/setup-t1-t8.sh
