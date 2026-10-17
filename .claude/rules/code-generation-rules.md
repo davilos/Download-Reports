@@ -1,17 +1,25 @@
 ---
-description: "Code generation rules: no any, tests first, structure, output hygiene, docs kept current. Points to docs/CODE-GENERATION-GUIDELINES.md."
+description: "Code generation rules: no any, tests first, structure, output hygiene, /check, git, docs kept current. Points to docs/CODE-GENERATION-GUIDELINES.md."
 ---
 
 # Code generation rules
 
 Full detail: `docs/CODE-GENERATION-GUIDELINES.md`. Read it before writing or changing code or tests.
 
-- No `any`, in source or tests. Use precise types or `unknown` plus narrowing. No `as`, `!` or `@ts-ignore` to
-  silence the compiler.
+- No `any`, in source or tests: use precise types or `unknown` plus narrowing, `jest.Mocked` / `vi.mocked`. Tooling
+  doesn't enforce it (no `strict`, backend `no-explicit-any` off), so type exported signatures explicitly. No `as`,
+  `!` or `@ts-ignore` to silence the compiler. Existing exception to fix when touched: `useUpload.test.ts:42`.
 - Tests first: every behaviour change ships unit tests in the same commit; a bug fix starts with a failing test.
-  Mock Prisma, S3 and `src/api`. Never delete, skip or weaken a test to make a change pass.
+  Cover the happy path, each error code, boundaries and status transitions. Mock Prisma, S3 and `src/api`; new
+  routes get an e2e case. Never delete, skip or weaken a test to make a change pass.
 - Put code in the layer that owns it, reuse before adding, keep the diff minimal, and add no dependency without a
   stated reason.
 - No `console.log`, commented-out code or bare TODOs. Comments explain why. Never swallow errors.
-- Run `/check` before calling the work done.
-- Update `AGENTS.md` and the matching `docs/` file in the same commit as the change.
+- Run `/check` before calling the work done; a change is done only when it passes for every package touched.
+- Git: branches `<type>/<kebab-description>` using Conventional Commit types (`feat/`, `fix/`, `hotfix/`,
+  `refactor/`, `test/`, `docs/`, `chore/`, `ci/`); commits `type(scope): …`, one logical change each. Detail in
+  `docs/NAMING-CONVENTIONS.md`.
+- Keep the docs current: in the same commit as any change, update the matching rule and `docs/` file (rules,
+  entities, routes, files, commands, env vars, naming), and `AGENTS.md` when the overview, stack, entities or
+  structure change; delete entries that stop being true. Document only what the code does, and verify it. Rules
+  live in `.claude/rules/`, `.cursor/rules/` and `.windsurf/rules/` with the same body: edit all three together.

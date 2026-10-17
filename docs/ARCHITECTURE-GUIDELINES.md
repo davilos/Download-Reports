@@ -92,9 +92,10 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. |
 | `.claude/commands/check.md`, `.claude/agents/api-contract-reviewer.md` | The `/check` gate and the contract-review subagent. |
 | `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval), mirrored per tool. |
-| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
-| `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
-| `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |
+| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | The rules agents follow, each pointing to its `docs/` guideline: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
+| `AGENTS.md` | Project summary (overview, stack, entities, codebase map, rule index); the root `CLAUDE.md` imports it. |
+| `backend/AGENTS.md`, `frontend/AGENTS.md` | Package notes; each package's `CLAUDE.md` imports its file. |
+| `docs/` | Full-detail references behind `AGENTS.md` and the rules: domain, architecture, naming, code generation. |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Design context for the `impeccable` skill: product truth, the visual system (tokens, components, rules) with its machine-readable sidecar `.impeccable/design.json`, and surface briefs holding each surface's direction contract. `.impeccable/mocks/` (decision sketches), `.impeccable/review/` (screenshots) and `.impeccable/questions/` (decision-page logs) are local working files and gitignored. |
 
 ## Build & test commands

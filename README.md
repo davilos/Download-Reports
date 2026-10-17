@@ -43,6 +43,7 @@ All routes require `Authorization: Bearer <jwt>` and live under `/api`.
 
 - **CI** (`.github/workflows/ci.yml`): typecheck, lint, unit + e2e tests and build for both packages.
 - **Pre-commit**: Prettier on staged backend files, oxlint on staged frontend files.
-- **AI agents**: project rules in [AGENTS.md](AGENTS.md); Claude Code hooks, commands and subagents in `.claude/`.
+- **AI agents**: project summary in [AGENTS.md](AGENTS.md); rules in `.claude/rules/` (mirrored in `.cursor/` and
+  `.windsurf/`); Claude Code hooks, commands and subagents in `.claude/`.
 
 Specs and architectural decisions: [`.specs/`](.specs/) (`STATE.md` holds the decision log).
