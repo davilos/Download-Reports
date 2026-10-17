@@ -89,10 +89,11 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.github/workflows/ci.yml` | CI per package: typecheck, lint, unit + e2e tests, build (Node 22). |
 | `package.json`, `.husky/pre-commit`, `lint-staged.config.mjs` | Root git hooks only: Prettier on staged backend files, oxlint on staged frontend files. |
 | `backend/eslint.config.mjs`, `backend/.prettierrc`, `frontend/.oxlintrc.json` | Lint and format rules. |
-| `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. |
+| `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. `settings.json` also enables the `context7` MCP server and allows its tools. |
+| `.mcp.json`, `.cursor/mcp.json` | Project MCP servers for Claude Code and Cursor: `context7` (remote, no API key) serves current library docs. Windsurf has no project-level MCP config; setup in the README. |
 | `.claude/commands/check.md`, `.claude/agents/api-contract-reviewer.md` | The `/check` gate and the contract-review subagent. |
 | `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval), mirrored per tool. |
-| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | The rules agents follow, each with a task → section list that says which part of its `docs/` guideline to read: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
+| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | The rules agents follow, each with a task → section list that says which part of its `docs/` guideline to read: `core-architecture-principles`, `code-generation-rules` and `library-docs-rules` (when and how to query Context7) always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
 | `AGENTS.md` | Project summary (overview, stack, entities, codebase map, rule index); the root `CLAUDE.md` imports it. |
 | `backend/AGENTS.md`, `frontend/AGENTS.md` | Package notes; each package's `CLAUDE.md` imports its file. |
 | `docs/` | Full-detail references behind `AGENTS.md` and the rules: domain, architecture, naming, code generation. |

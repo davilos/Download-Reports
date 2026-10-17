@@ -17,6 +17,7 @@ Package notes: [backend/AGENTS.md](backend/AGENTS.md), [frontend/AGENTS.md](fron
 | New frontend API call / type | [Architecture › API ↔ UI contract](docs/ARCHITECTURE-GUIDELINES.md#api--ui-contract) |
 | New test | [Code generation › Tests first](docs/CODE-GENERATION-GUIDELINES.md#tests-first), [Naming › Tests](docs/NAMING-CONVENTIONS.md#tests) |
 | New command / CI step / hook / skill | [Architecture › Tooling](docs/ARCHITECTURE-GUIDELINES.md#tooling-ci-agent-harness-and-docs) |
+| Setup / config / library API / new dependency | Context7, as `library-docs-rules` says, with the version from the package's `package.json` |
 | A "Not built" feature | [Domain › Not in the domain yet](docs/DOMAIN-GUIDELINES.md#not-in-the-domain-yet) — ask the user first |
 | Any change, before committing | [Code generation › Keep the docs current](docs/CODE-GENERATION-GUIDELINES.md#keep-the-docs-current) |
 
@@ -69,14 +70,15 @@ frontend/vite.config.ts           no /api proxy: the dev SPA (:5173) can't reach
 .github/workflows/ci.yml          CI gate · .husky/ + lint-staged.config.mjs: pre-commit format and lint
 .claude/                          hooks (guard, post-edit), /check, api-contract-reviewer, skills, rules
                                   (skills and rules mirrored in .cursor/ and .windsurf/)
+.mcp.json, .cursor/mcp.json       project MCP servers: context7 (current library docs)
 docs/                             full-detail references behind this file and the rules
 PRODUCT.md, DESIGN.md, .impeccable/  design context: product truth, visual system + design.json, surface briefs
 ```
 
 ## Rules
 
-In `.claude/rules/`, with the same body in `.cursor/rules/*.mdc` and `.windsurf/rules/*.md`. Each rule lists which
-section of its doc to read for each kind of task.
+In `.claude/rules/`, with the same body in `.cursor/rules/*.mdc` and `.windsurf/rules/*.md`. Each rule says what to
+read for each kind of task.
 
 | Rule | Loads | Covers | Full detail |
 | ---- | ----- | ------ | ----------- |
@@ -84,6 +86,7 @@ section of its doc to read for each kind of task.
 | `core-architecture-principles` | always | presigned URLs, layers, S3 / database / config access, soft delete, routes and errors, API contract | [ARCHITECTURE](docs/ARCHITECTURE-GUIDELINES.md) |
 | `domain-rules` | `backend/src/{reports,auth}`, `backend/prisma`, frontend `hooks`, `types`, `api`, `components/reports` | upload limits, download and confirm, expiry cron, listing, features not built | [DOMAIN](docs/DOMAIN-GUIDELINES.md) |
 | `naming-conventions` | backend and frontend source | backend, API, Prisma, frontend and test names; known deviations | [NAMING](docs/NAMING-CONVENTIONS.md) |
+| `library-docs-rules` | always | when and how to query Context7 for version-matched library docs; fallback | [README › Context7](README.md#library-docs-context7) |
 
 ## tlc-spec-lean
 
