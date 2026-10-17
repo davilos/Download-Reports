@@ -14,6 +14,7 @@ layers, or before changing routes, configuration, storage, auth or tooling.
   through `ConfigService`.
 - Deletion is soft (`deletedAt` + `status = EXPIRED`); every query filters `deletedAt: null`. Never hard-delete.
 - Routes live under `/api`; report routes sit behind `JwtAuthGuard`. Errors are `throw new XxxException({ error: 'UPPER_SNAKE_CODE' })`.
-- Keep the backend `Report` and `frontend/src/types/report.ts` consistent, or say explicitly that you did not.
+- The HTTP contract lives only in `packages/contracts/` (types only): change it there and make both apps compile;
+  never redeclare a request, response or error-code type inside `backend/` or `frontend/`.
 - When the structure changes, update the codebase map in `AGENTS.md` and in `docs/ARCHITECTURE-GUIDELINES.md` in
   the same commit.

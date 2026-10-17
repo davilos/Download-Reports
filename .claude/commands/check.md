@@ -7,7 +7,8 @@ allowed-tools: Bash(npm:*), Bash(npx:*), Bash(git status:*), Bash(git diff:*)
 Run the verification gate and report the result. Scope: `$ARGUMENTS`.
 
 1. Decide which packages to check. If `$ARGUMENTS` names `backend` or `frontend`, use that. Otherwise run
-   `git status --porcelain` and check every package with changes; if nothing changed, check both.
+   `git status --porcelain` and check every package with changes; a change under `packages/contracts/` counts as
+   both packages, since both compile it; if nothing changed, check both.
 2. Backend (run inside `backend/`, stop at the first failing step):
    - `npx prisma generate`
    - `npx tsc --noEmit`

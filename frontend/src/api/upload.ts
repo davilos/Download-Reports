@@ -1,16 +1,6 @@
 import axios from 'axios';
+import type { UploadIntentRequest, UploadIntentResponse } from '@download-reports/contracts';
 import apiClient from './client';
-
-export interface RequestUploadPayload {
-  fileName: string;
-  fileSize: number;
-  contentType: string;
-}
-
-export interface RequestUploadResponse {
-  uploadUrl: string;
-  reportId: string;
-}
 
 /**
  * Step 1: Request a presigned upload URL from the backend.
@@ -18,9 +8,9 @@ export interface RequestUploadResponse {
  * and the reportId for the newly created PENDING report.
  */
 export async function requestUploadUrl(
-  payload: RequestUploadPayload
-): Promise<RequestUploadResponse> {
-  const { data } = await apiClient.post<RequestUploadResponse>(
+  payload: UploadIntentRequest
+): Promise<UploadIntentResponse> {
+  const { data } = await apiClient.post<UploadIntentResponse>(
     '/reports/upload-intent',
     payload
   );

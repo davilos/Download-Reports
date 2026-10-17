@@ -1,6 +1,6 @@
 ---
 name: api-contract-reviewer
-description: Checks that the backend API contract (Prisma model, DTOs, controller responses, error codes) and the frontend types/api layer agree. Use after any change to backend/src/reports, backend/prisma/schema.prisma, frontend/src/types or frontend/src/api, or before closing a feature that spans both packages.
+description: Checks that the backend API contract (Prisma model, DTOs, controller responses, error codes) and the frontend types/api layer agree. Use after any change to packages/contracts, backend/src/reports, backend/prisma/schema.prisma, frontend/src/types or frontend/src/api, or before closing a feature that spans both packages.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -10,6 +10,10 @@ read-only: never edit files. Report drift with evidence; do not propose large re
 
 ## Sources of truth
 
+Shared contract:
+- `packages/contracts/src/index.ts` — the declared request/response shapes and `ReportErrorCode`. Both sides should
+  import from it; flag any contract type redeclared locally, and any route whose return type does not use it yet.
+
 Backend side:
 - `backend/prisma/schema.prisma` — `Report` model, `ReportStatus` and `ReportType` enums.
 - `backend/src/reports/dto/*.ts` — request shapes and validation (class-validator).
@@ -17,7 +21,7 @@ Backend side:
 - `backend/src/reports/reports.service.ts` — the objects actually returned and the `{ error: 'CODE' }` bodies thrown.
 
 Frontend side:
-- `frontend/src/types/*.ts` — `Report`, `ReportsResponse`, `ReportsFilters`, status/type unions.
+- `frontend/src/types/*.ts` — re-exports `Report`, `ReportsResponse`, `ReportsFilters`, status/type unions.
 - `frontend/src/api/*.ts` — URLs, verbs, params and response generics.
 - `frontend/src/hooks/*.ts` — error-code handling (`error === '...'`).
 

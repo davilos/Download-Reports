@@ -250,7 +250,8 @@ describe('ReportsController (e2e)', () => {
       });
     });
 
-    // Pins the names the frontend `Report` mirrors (frontend/src/types/report.ts): renaming either side fails a test.
+    // Pins the names of the contract `Report` (packages/contracts): findAll returns Prisma rows the compiler can't
+    // check against it yet, so renaming either side must fail this test.
     it('returns createdAt as an ISO string, fileSize as a number and the UPPERCASE status', async () => {
       const createdAt = new Date('2026-10-08T12:00:00.000Z');
       const statuses = [
