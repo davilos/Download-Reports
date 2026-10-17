@@ -92,7 +92,7 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. |
 | `.claude/commands/check.md`, `.claude/agents/api-contract-reviewer.md` | The `/check` gate and the contract-review subagent. |
 | `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval), mirrored per tool. |
-| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | The rules agents follow, each pointing to its `docs/` guideline: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
+| `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | The rules agents follow, each with a task → section list that says which part of its `docs/` guideline to read: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
 | `AGENTS.md` | Project summary (overview, stack, entities, codebase map, rule index); the root `CLAUDE.md` imports it. |
 | `backend/AGENTS.md`, `frontend/AGENTS.md` | Package notes; each package's `CLAUDE.md` imports its file. |
 | `docs/` | Full-detail references behind `AGENTS.md` and the rules: domain, architecture, naming, code generation. |

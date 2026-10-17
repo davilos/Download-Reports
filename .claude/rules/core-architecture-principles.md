@@ -4,8 +4,17 @@ description: "Core architecture principles: layers, S3/DB/config access, soft de
 
 # Core architecture principles
 
-Full detail: `docs/ARCHITECTURE-GUIDELINES.md`. Read it before adding, moving or removing files, modules or
-layers, or before changing routes, configuration, storage, auth or tooling.
+Full detail: `docs/ARCHITECTURE-GUIDELINES.md`. Read the section that matches the task:
+
+- Adding, moving or removing a file, module, service or layer → `#codebase-map`
+- Changing a status flow, TTL, upload/download flow or another listed decision → `#key-decisions`
+- Adding or changing a route, controller, DTO, error code, frontend API call or type → `#api--ui-contract`
+- Changing bootstrap, global pipes, module wiring or CORS → `#backend-interface-http`
+- Using S3, the database, auth or a config key / env var → `#backend-infrastructure`
+- Adding a page, component, hook or API wrapper → `#frontend-frontendsrc`
+- Adding a test suite or e2e spec → `#tests`
+- Adding or changing a command, CI step, git hook, Claude hook, rule or skill → `#tooling-ci-agent-harness-and-docs`
+- Running or changing typecheck, lint, test or build commands → `#build--test-commands`
 
 - File bytes never pass through the API: the browser PUTs to and GETs from S3 through presigned URLs.
 - Business rules and status transitions live in services (backend) and hooks (frontend). Controllers, `src/api/*`

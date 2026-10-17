@@ -75,7 +75,8 @@ PRODUCT.md, DESIGN.md, .impeccable/  design context: product truth, visual syste
 
 ## Rules
 
-In `.claude/rules/`, with the same body in `.cursor/rules/*.mdc` and `.windsurf/rules/*.md`.
+In `.claude/rules/`, with the same body in `.cursor/rules/*.mdc` and `.windsurf/rules/*.md`. Each rule lists which
+section of its doc to read for each kind of task.
 
 | Rule | Loads | Covers | Full detail |
 | ---- | ----- | ------ | ----------- |

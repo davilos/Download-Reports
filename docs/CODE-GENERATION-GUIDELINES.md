@@ -65,6 +65,7 @@ the overview, stack, entities or structure change. A change whose docs are stale
 | A command, script, tool, hook or CI step | Build & test commands and the tooling table in `docs/ARCHITECTURE-GUIDELINES.md` |
 | An env var or config key | `docs/ARCHITECTURE-GUIDELINES.md`, the package `AGENTS.md` config list, and the README |
 | A naming pattern | `naming-conventions` (git: `code-generation-rules`) and `docs/NAMING-CONVENTIONS.md` |
+| A heading in `docs/` (added, renamed, removed) | The task → section lists in the rules and the "Read before you change" table in `AGENTS.md` |
 | Something listed as missing, a deviation, a gap or a known issue (e.g. you fixed it) | Remove or reword that entry everywhere it appears |
 | Something only one package cares about | That package's `AGENTS.md` (`backend/` or `frontend/`) |
 

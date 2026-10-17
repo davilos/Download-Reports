@@ -6,8 +6,13 @@ globs: backend/src/reports/**,backend/src/auth/**,backend/prisma/**,frontend/src
 
 # Domain rules
 
-Full detail: `docs/DOMAIN-GUIDELINES.md`. Read it before changing report behaviour, the schema, statuses, limits
-or the upload and download flows. Entities and statuses are summarized in `AGENTS.md`.
+Full detail: `docs/DOMAIN-GUIDELINES.md`. Entities and statuses are summarized in `AGENTS.md`. Read the section
+that matches the task:
+
+- Adding or changing an entity, field, enum or migration → `#entities`
+- Adding or changing a business rule, status, limit, TTL or the upload/download flow → `#business-rules`
+- Naming a domain concept in code or UI copy (upload intent, confirmation, download link) → `#glossary`
+- A request touches the not-built list below → `#not-in-the-domain-yet`, then ask the user first
 
 1. Only pdf/xml/csv/xlsx, 1 B–50 MB — checked in `useUpload.ts` and `upload-intent.dto.ts`; change both together.
 2. Only `AVAILABLE` reports download (`422 REPORT_NOT_AVAILABLE`). Download URL lasts 2 min, upload URL 15 min

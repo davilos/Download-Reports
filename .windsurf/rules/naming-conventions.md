@@ -6,8 +6,15 @@ globs: backend/**/*.ts,backend/prisma/schema.prisma,frontend/src/**/*.ts,fronten
 
 # Naming conventions
 
-Full detail and examples: `docs/NAMING-CONVENTIONS.md`. Read it before naming a new file, class, function,
-route, field or test. Branch and commit names are in `code-generation-rules`.
+Full detail and examples: `docs/NAMING-CONVENTIONS.md`. Branch and commit names are in `code-generation-rules`.
+Read the section that matches the task:
+
+- Naming a backend file, module, class, method, constant, error code or env var → `#backend-nestjs`
+- Naming a route, query parameter or JSON field → `#http-api`
+- Naming a Prisma model, field, enum or index → `#database-prisma`
+- Naming a component, prop, hook, callback, boolean or DOM id → `#frontend-react`
+- Naming a test file, `describe` / `it` block or mock → `#tests`
+- About to copy an existing name that breaks these patterns → `#known-deviations`
 
 - Backend: files `kebab-case.<role>.ts` (`upload-intent.dto.ts`); classes PascalCase + role (`ReportsService`,
   `UploadIntentDto`); methods verb + noun (`createUploadIntent`); constants, error codes, env vars UPPER_SNAKE
