@@ -91,7 +91,7 @@ status transitions go in services (backend) or hooks (frontend), never in contro
 | `backend/eslint.config.mjs`, `backend/.prettierrc`, `frontend/.oxlintrc.json` | Lint and format rules. |
 | `.claude/settings.json`, `.claude/hooks/` | `pre-tool-use.mjs` blocks destructive commands and `.env` access; `post-edit.mjs` formats/lints edited files. |
 | `.claude/commands/check.md`, `.claude/agents/api-contract-reviewer.md` | The `/check` gate and the contract-review subagent. |
-| `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval), mirrored per tool. |
+| `.claude/skills/`, `.cursor/skills/`, `.windsurf/skills/` | Workflow skills (tlc-*, the-judge, harness-eval, gh-address-comments), mirrored per tool. |
 | `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.windsurf/rules/*.md` | Short rules that point agents to the `docs/` guidelines: `core-architecture-principles` and `code-generation-rules` always apply; `domain-rules` and `naming-conventions` load only for matching paths. Same body in each tool; only the frontmatter differs. Edit all three together. |
 | `AGENTS.md`, `backend/AGENTS.md`, `frontend/AGENTS.md` | Agent rules; the `CLAUDE.md` files import them. |
 | `docs/` | Full-detail references behind `AGENTS.md`: domain, architecture, naming, code generation. |
